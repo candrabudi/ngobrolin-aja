@@ -13,7 +13,7 @@
                         '<i class="bx bx-check"></i>' : '';
                     chatRoomList.innerHTML += `
                     <li class="user-list-item chat-user-list" data-room="${user.room_id}">
-                        <a href="javascript:void(0);" class="chat-link">
+                        <a href="javascript:;" class="chat-link">
                             <div class="avatar avatar-${user.status}">
                                 <img src="${user.profile}" class="rounded-circle" alt="image">
                             </div>

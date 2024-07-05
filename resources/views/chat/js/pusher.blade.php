@@ -38,7 +38,7 @@
                 user_profile_image: data.data.user_profile_image,
                 user_full_name: data.data.full_name,
                 message: data.data.message,
-                has_images: [],
+                has_images: data.data.has_images,
                 has_files: [],
                 has_audios: [],
                 is_sender: is_sender,

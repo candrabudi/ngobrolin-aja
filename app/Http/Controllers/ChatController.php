@@ -56,7 +56,7 @@ class ChatController extends Controller
                 ->where('room_type', 'personal')
                 ->where('user_id', $to_id)
                 ->first();
-
+            // return $checkRoom;
             if (!$checkRoom) {
                 $room = new ChatRoom();
                 $room->room_name = "Private Chat";
@@ -94,7 +94,7 @@ class ChatController extends Controller
                 'code' => 201,
                 'message' => 'Private room already exists',
                 'data' => [
-                    'chat_room_id' => $checkRoom->room_id,
+                    'chat_room_id' => $checkRoom->chat_room_id,
                 ]
             ], 201);
 

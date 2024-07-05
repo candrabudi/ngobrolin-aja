@@ -682,6 +682,42 @@ ul.list-inline .list-inline-item {
 	font-size: 18px;
 }
 
+/* preview image upload */
+.chat .chat-body .messages .chats.preview-image-upload {
+	display: flex;
+    position: absolute;
+    bottom: 138px;
+    right: 24px;
+    left: 24px;
+    max-width: 100%;
+}
+.chats.preview-image-upload {
+	background: #EDEDED;
+	border-radius: 10px;
+	padding: 20px;
+	border-left: 2px solid #680A83;
+	z-index: 9;
+	position: relative;
+}
+.chats.preview-image-upload .chat-avatar {
+	padding: 0;
+	padding-right: 15px;
+}
+.chats.preview-image-upload .contact-close_call {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+}
+.chats.preview-image-upload .contact-close_call .close_replay {
+	color: #424242;
+	display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+}
+.chats.preview-image-upload .contact-close_call .close_replay i {
+	font-size: 18px;
+}
+
 /*-----------------
   3. Sidebar Menu
 -----------------------*/
@@ -8679,7 +8715,7 @@ body.darkmode {
 	}
 	.chat .chat-footer {
 		position: fixed;
-		bottom: 0;
+		bottom: 30;
 		left: 0;
 		width: 100%;
 		padding: 10px 15px;
@@ -8687,6 +8723,7 @@ body.darkmode {
 		top: inherit;
 		padding-left: 75px;
 	}
+
 	.contact_profile_icon {
 		top: 44px;
 		left: 50px;

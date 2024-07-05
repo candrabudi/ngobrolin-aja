@@ -25,4 +25,9 @@ class ChatMessage extends Model
             ->select('chat_messages.id', 'full_name', 'profile_image', 'message','chat_messages.created_at')
             ->join('user_profiles as up', 'up.user_id', '=', 'chat_messages.from_id');
     }
+
+    public function images()
+    {
+        return $this->hasMany(ChatMessageImage::class);
+    }
 }
