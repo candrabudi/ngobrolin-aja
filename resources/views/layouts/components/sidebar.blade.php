@@ -26,20 +26,19 @@
                         <li>
                             <div class="chat-action-btns">
                                 <div class="chat-action-col">
-                                    <a class="#" href="#" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
+                                    <a class="#" href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="bx bx-dots-vertical-rounded"></i>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <a href="javascript:;" class="dropdown-item "
-                                            data-bs-toggle="modal" data-bs-target="#new-chat"><span><i
-                                                    class="bx bx-message-rounded-add"></i></span>New Chat
+                                        <a href="javascript:;" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#new-chat" id="newChatButton">
+                                            <span><i class="bx bx-message-rounded-add"></i></span>New Chat
                                         </a>
-                                        <a href="javascript:;" class="dropdown-item"
-                                            data-bs-toggle="modal" data-bs-target="#new-group"><span><i
+                                        <a href="javascript:;" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#new-group"><span><i
                                                     class="bx bx-user-circle"></i></span>Create Group</a>
-                                        <a href="javascript:;" class="dropdown-item"
-                                            data-bs-toggle="modal" data-bs-target="#invite-other"><span><i
+                                        <a href="javascript:;" class="dropdown-item" data-bs-toggle="modal"
+                                            data-bs-target="#invite-other"><span><i
                                                     class="bx bx-user-plus"></i></span>Invite Others</a>
                                     </div>
                                 </div>
@@ -50,8 +49,7 @@
                     <div class="user-chat-search">
                         <form>
                             <span class="form-control-feedback"><i class="bx bx-search"></i></span>
-                            <input type="text" name="chat-search" placeholder="Search"
-                                class="form-control">
+                            <input type="text" name="chat-search" placeholder="Search" class="form-control">
                             <div class="user-close-btn-chat"><span class="material-icons">close</span>
                             </div>
                         </form>
@@ -69,7 +67,7 @@
                 </div>
 
                 <ul class="user-list space-chat" id="chat-room-list">
-                   
+
                 </ul>
             </div>
         </div>

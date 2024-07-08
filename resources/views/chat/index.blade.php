@@ -1,6 +1,6 @@
 @extends('layouts.app')
-
 @section('content')
+    @include('layouts.components.sidebar')
     <div class="chat status-middle-bar d-flex align-items-center justify-content-center">
         <div class="status-right">
             <div class="empty-chat-img"><img src="assets/img/empty-img-01.png" alt="Image"></div>

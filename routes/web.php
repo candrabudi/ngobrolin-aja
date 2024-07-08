@@ -6,6 +6,8 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserLocationController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Http\Request;
 
 /*
@@ -20,9 +22,10 @@ use Illuminate\Http\Request;
 */
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/', [AuthController::class, 'login'])->name('login');
     Route::post('/process/login', [AuthController::class, 'loginProcess'])->name('login.process');
 });
-
+Route::middleware('auth')->post('/update-location', [UserLocationController::class, 'updateLocation']);
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-contact', [ContactController::class, 'getContact'])->name('contact.get');
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.home');
@@ -35,6 +38,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/message/single-message/{message_id}', [MessageController::class, 'getSingleMessage'])->name('message.singlemessage');
 
     Route::post('/user/update-activity', [UserController::class, 'updateUserActivity'])->name('user.activity.update');
+    Route::get('/setting', [SettingController::class, 'index'])->name('setting');
 
     Route::post('/pusher/auth', function (Request $request) {
         $authenticated = false;
@@ -63,4 +67,6 @@ Route::group(['middleware' => 'auth'], function () {
             abort(403, 'Unauthorized action.');
         }
     });
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

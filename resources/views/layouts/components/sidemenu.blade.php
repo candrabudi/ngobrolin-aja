@@ -62,13 +62,20 @@
                             @else
                                 <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt>
                             @endif
-
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a href="settings.html" class="dropdown-item"><span><i
-                                        class="bx bx-cog"></i></span>Settings</a>
-                            <a href="email-login.html" class="dropdown-item"><span><i
-                                        class="bx bx-log-out"></i></span>Logout </a>
+                            <a href="/setting" class="dropdown-item">
+                                <span>
+                                    <i class="bx bx-cog"></i>
+                                </span>
+                                Settings
+                            </a>
+                            <a href="javascript:;" data-bs-toggle="modal" data-bs-target="#setting-logout" class="dropdown-item">
+                                <span>
+                                    <i class="bx bx-log-out"></i>
+                                </span>
+                                Logout 
+                            </a>
                         </div>
                     </div>
                 </li>

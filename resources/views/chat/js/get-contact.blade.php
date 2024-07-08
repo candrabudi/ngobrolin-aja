@@ -1,5 +1,5 @@
 <script>
-    $(document).ready(function() {
+    document.getElementById('newChatButton').addEventListener('click', function() {
         axios.get('{{ route('contact.get') }}')
             .then(response => {
                 userList.innerHTML = '';

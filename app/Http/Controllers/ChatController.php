@@ -11,11 +11,17 @@ use App\Models\UserProfile;
 use App\Models\ChatRoomParticipant;
 use Auth;
 use DB;
+use MobileDetect;
 class ChatController extends Controller
 {
     public function index()
     {
-        return view('chat.index');
+        $isMobile = MobileDetect::isMobile();
+        if($isMobile) {
+            return view('mobile.index');
+        }else{
+            return view('chat.index');
+        }
     }
 
     public function getRoomChat()
