@@ -51,23 +51,24 @@
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}" type="d444639eef02699ded0206bd-text/javascript"></script>
+    <script data-cfasync="false" src="{{ asset('cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
 
-    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" type="d444639eef02699ded0206bd-text/javascript"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
 
-    <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="d444639eef02699ded0206bd-text/javascript"></script>
+    <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
 
-    <script src="{{ asset('assets/plugins/swiper/swiper.min.js') }}" type="d444639eef02699ded0206bd-text/javascript"></script>
+    <script src="{{ asset('assets/plugins/swiper/swiper.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
 
-    <script src="{{ asset('assets/plugins/fancybox/jquery.fancybox.min.js') }}" type="d444639eef02699ded0206bd-text/javascript"></script>
+    <script src="{{ asset('assets/plugins/fancybox/jquery.fancybox.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
 
-    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}" type="d444639eef02699ded0206bd-text/javascript"></script>
+    <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
 
-    <script src="{{ asset('assets/js/script.js') }}" type="d444639eef02699ded0206bd-text/javascript"></script>
+    <script src="{{ asset('assets/js/script.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
     <script src="{{ asset('cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"
-        data-cf-settings="d444639eef02699ded0206bd-|49" defer></script>
+        data-cf-settings="486412cb5ceb9f020c3dd6e7-|49" defer></script>
 
-    @yield('scripts')
+@yield('scripts')
 </body>
 
 </html>

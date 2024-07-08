@@ -15,6 +15,63 @@
     </div>
 
     @include('chat.chat-message')
+
+    <div class="modal fade" id="video_call" role="document">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content voice_content">
+                <div class="modal-body voice_body">
+                    <div class="call-box incoming-box">
+                        <div class="call-wrapper">
+                            <div class="call-inner">
+                                <div class="call-user">
+                                    <img alt="User Image" src="assets/img/avatar/avatar-2.jpg" class="call-avatar">
+                                    <h4>Mark Villiams <span>Video Calling</span>
+                                    </h4>
+                                </div>
+                                <div class="call-items">
+                                    <a href="#" class="btn call-item call-end" data-bs-dismiss="modal">
+                                        <i class="bx bx-x"></i>
+                                    </a>
+                                    <a href="video-call.html" class="btn call-item call-start">
+                                        <i class="feather-video"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="voice_call" role="document">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content voice_content">
+                <div class="modal-body voice_body">
+                    <div class="call-box incoming-box">
+                        <div class="call-wrapper">
+                            <div class="call-inner">
+                                <div class="call-user">
+                                    <img alt="User Image" src="assets/img/avatar/avatar-2.jpg" class="call-avatar">
+                                    <h4>Mark Villiams <span>Voice Calling</span>
+                                    </h4>
+                                </div>
+                                <div class="call-items">
+                                    <a href="#" class="btn call-item call-end" data-bs-dismiss="modal">
+                                        <i class="bx bx-x"></i>
+                                    </a>
+                                    <a href="audio-call.html" class="btn call-item call-start">
+                                        <i class="bx bx-phone-call"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('styles')
     <style>
@@ -82,26 +139,26 @@
         const galleryInput = document.getElementById('galleryInput');
         const previewImagesContainer = document.getElementById('previewImages');
         let currentPreviewImage = null;
-    
+
         galleryInput.addEventListener('change', function() {
             const files = this.files;
             if (files.length === 0) {
                 return;
             }
-    
+
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 if (!file.type.startsWith('image/')) {
                     continue;
                 }
-    
+
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgContainer = document.createElement('div');
                     imgContainer.classList.add('img-container');
                     imgContainer.style.backgroundImage = `url('${event.target.result}')`;
                     imgContainer.setAttribute('data-image-url', event.target.result);
-    
+
                     const closeBtn = document.createElement('a');
                     closeBtn.href = '#';
                     closeBtn.classList.add('close-btn');
@@ -114,7 +171,7 @@
                             document.querySelector('.preview-image-upload').classList.add('d-none');
                         }
                     });
-    
+
                     imgContainer.appendChild(closeBtn);
                     imgContainer.addEventListener('click', function() {
                         const imageUrl = imgContainer.getAttribute('data-image-url');
@@ -122,21 +179,21 @@
                         $('#imageModal').modal('show');
                         currentPreviewImage = imgContainer;
                     });
-    
+
                     previewImagesContainer.appendChild(imgContainer);
                 };
                 reader.readAsDataURL(file);
             }
             document.querySelector('.preview-image-upload').classList.remove('d-none');
         });
-    
+
         document.querySelector('.close-preview').addEventListener('click', function(event) {
             event.preventDefault();
             document.querySelector('.preview-image-upload').classList.add('d-none');
             previewImagesContainer.innerHTML = '';
             galleryInput.value = '';
         });
-    
+
         document.getElementById('deleteImageBtn').addEventListener('click', function() {
             if (currentPreviewImage) {
                 currentPreviewImage.remove();
@@ -147,7 +204,7 @@
                 currentPreviewImage = null;
             }
         });
-    
+
         $(document).on('click', function(event) {
             if (!$(event.target).closest('.modal-content').length &&
                 !$(event.target).closest('.img-container').length &&
@@ -156,7 +213,7 @@
             }
         });
     </script>
-    
+
     <script>
         var currentUserID = {{ Auth::user()->id }};
     </script>
