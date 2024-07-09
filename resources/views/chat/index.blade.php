@@ -184,12 +184,35 @@
             cursor: pointer;
         }
     </style>
+<style>
+    .form-control.chat_form {
+        resize: none;
+        overflow: hidden;
+    }
+</style>
 @endsection
 @section('scripts')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const textarea = document.getElementById('messageInput');
+            const messages = document.getElementById('messages');
+            const chatFooter = document.getElementById('chatFooter');
+            const chatBody = document.getElementById('chat-body');
+    
+            function adjustTextareaHeight() {
+                textarea.style.height = 'auto';
+                textarea.style.height = `${textarea.scrollHeight}px`;
+            }
+    
+            adjustTextareaHeight();
+    
+            textarea.addEventListener('input', adjustTextareaHeight);
+        });
+    </script>
     <script>
         const galleryInput = document.getElementById('galleryInput');
         const previewImagesContainer = document.getElementById('previewImages');

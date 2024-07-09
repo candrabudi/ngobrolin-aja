@@ -5,6 +5,10 @@
                 const chatRoomList = document.getElementById('chat-room-list');
                 chatRoomList.innerHTML = '';
 
+                if (response.data.data.length === 0) {
+                    localStorage.clear();
+                }
+
                 response.data.data.forEach(user => {
                     const isSender = user.sender_id === currentUserID;
                     const doubleTick = isSender && !user.sender_message_unread ? '<i class="bx bx-check-double"></i>' : '';
@@ -51,6 +55,12 @@
                     link.addEventListener('click', function() {
                         const roomId = this.closest('.chat-user-list').dataset.room;
                         localStorage.setItem('roomId', roomId);
+
+                        if (window.innerWidth <= 768) {
+                            $('.sidebar-menu').addClass('d-none');
+                            $('.chat-footer').css('margin-top', '-120px');
+                        }
+
                         $('.status-middle-bar').remove();
                         middleSection.style.display = 'block';
                         loadDetailRoom(roomId);

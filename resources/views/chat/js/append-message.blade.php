@@ -122,7 +122,6 @@
             messageContainer.innerHTML += messageElement;
         }
 
-        // Add event listener for the reply button
         messageContainer.querySelectorAll('.reply-button').forEach(button => {
             button.addEventListener('click', function(event) {
                 event.preventDefault();

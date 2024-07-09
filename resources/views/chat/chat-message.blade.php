@@ -2,11 +2,11 @@
     <div>
         @include('chat.chat-header')
         <div class="chat-body chat-page-group slimscroll" id="chat-body">
-            <div class="messages">
-
+            <div class="messages" id="messages">
+                
             </div>
         </div>
-        <div class="chat-footer">
+        <div class="chat-footer" id="chatFooter">
             <form id="messageForm" enctype="multipart/form-data">
                 <div class="smile-foot">
                     <div class="chat-action-btns">
@@ -34,8 +34,7 @@
                     @include('chat.partials.forward-chat-message')
                     @include('chat.partials.preview-image-upload')
                     <input type="hidden" name="message_reply_id" id="messageReplyId">
-                    <input type="text" id="messageInput" class="form-control chat_form"
-                        placeholder="Type your message here...">
+                    <textarea id="messageInput" class="form-control chat_form" placeholder="Type your message here..." rows="1"></textarea>
                 </div>
                 <div class="form-buttons">
                     <button class="btn send-btn" type="submit">

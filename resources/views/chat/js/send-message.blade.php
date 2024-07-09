@@ -1,10 +1,17 @@
 <script>
-    document.getElementById('messageForm').addEventListener('submit', function(event) {
+    function adjustTextareaHeight() {
+        const messageInput = document.getElementById('messageInput');
+        messageInput.style.height = 'auto';
+        messageInput.style.height = `${messageInput.scrollHeight}px`;
+    }
+
+    function handleFormSubmit(event) {
         event.preventDefault();
 
         const messageInput = document.getElementById('messageInput').value.trim();
         const messageReplyId = document.getElementById('messageReplyId').value;
         const roomId = localStorage.getItem('roomId');
+        const previewImagesContainer = document.querySelector('.preview-image-upload');
 
         if (!messageInput && previewImagesContainer.children.length === 0) {
             showToast('Please type a message or upload images.');
@@ -47,15 +54,27 @@
             console.error('Error sending message:', error);
             showToast('An error occurred while sending the message.');
         });
-    });
+    }
 
-    document.getElementById('locationTrigger').addEventListener('click', function(event) {
+    function handleEnterKeyPress(event) {
+        const messageInput = document.getElementById('messageInput');
+        const messageForm = document.getElementById('messageForm');
+
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            handleFormSubmit(event);
+        } else if (event.key === 'Enter' && event.shiftKey) {
+
+        }
+    }
+
+    function handleLocationClick(event) {
         event.preventDefault();
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
-
                 const roomId = localStorage.getItem('roomId');
                 const messageReplyId = document.getElementById('messageReplyId').value;
 
@@ -73,7 +92,7 @@
                 .then(function(response) {
                     if (response.data.status === 'success') {
                         document.getElementById('messageInput').value = '';
-                        previewImagesContainer.innerHTML = '';
+                        document.querySelector('.preview-image-upload').innerHTML = '';
                         document.querySelector('.preview-image-upload').classList.add('d-none');
                         document.querySelector('#forwardChatMsg').classList.add('d-none');
                     } else {
@@ -94,7 +113,7 @@
         } else {
             showToast('Geolocation is not supported by this browser.');
         }
-    });
+    }
 
     function dataURLtoFile(dataurl, filename) {
         var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
@@ -130,4 +149,10 @@
             setTimeout(() => toast.remove(), 300);
         }, 5000);
     }
+
+    document.getElementById('messageForm').onsubmit = handleFormSubmit;
+
+    document.getElementById('locationTrigger').onclick = handleLocationClick;
+
+    document.getElementById('messageInput').onkeydown = handleEnterKeyPress;
 </script>

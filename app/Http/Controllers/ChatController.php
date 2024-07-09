@@ -175,7 +175,7 @@ class ChatController extends Controller
                 "unread" => $unreadMessages,
                 "sender_message_unread" => $senderLastMessage ? true : false,
                 'lastMessageTime' => $lastMessage ? $lastMessage->created_at : null,
-                'is_location' => $senderLastMessage->is_location
+                'is_location' => $senderLastMessage ? $senderLastMessage->is_location : 0
             ];
         }
 
@@ -195,7 +195,6 @@ class ChatController extends Controller
                 ->where('is_read', 0)
                 ->count();
 
-            // Decrypt the last message if it exists
             $decryptedLastMessage = null;
             if ($lastMessage) {
                 try {
@@ -203,7 +202,7 @@ class ChatController extends Controller
                     $decryptedMessageContent = Crypt::decryptString($lastMessage->message);
                     $decryptedLastMessage = str_replace($privateKey, '', $decryptedMessageContent);
                 } catch (\Exception $e) {
-                    $decryptedLastMessage = $lastMessage->message; // fallback to original message if decryption fails
+                    $decryptedLastMessage = $lastMessage->message;
                 }
             }
 
