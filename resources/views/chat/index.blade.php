@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('layouts.components.sidebar')
+    <div id="toastContainer" class="toast-container"></div>
     <div class="chat status-middle-bar d-flex align-items-center justify-content-center">
         <div class="status-right">
             <div class="empty-chat-img"><img src="assets/img/empty-img-01.png" alt="Image"></div>
@@ -72,6 +73,20 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="mapModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mapModalLabel">Location Preview</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="map" style="width: 100%; height: 600px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('styles')
     <style>
@@ -131,9 +146,49 @@
             color: white;
             cursor: pointer;
         }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateX(100%);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .toast .close-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
     </style>
 @endsection
 @section('scripts')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         const galleryInput = document.getElementById('galleryInput');

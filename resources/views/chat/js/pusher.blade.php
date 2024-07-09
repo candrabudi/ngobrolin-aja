@@ -45,6 +45,7 @@
                 datetime: data.data.datetime,
                 is_read: false,
                 is_replied: data.data.is_replied,
+                is_location: data.data.is_location,
                 message_reply: data.data.message_reply
             });
         }

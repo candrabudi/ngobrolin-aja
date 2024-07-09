@@ -105,38 +105,32 @@
     <script>
         function handleLocationAccess() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        // Handle the successful retrieval of the location
+                        const latitude = position.coords.latitude;
+                        const longitude = position.coords.longitude;
+                        // Process the coordinates as needed, for example:
+                        // window.location.href = `/your-endpoint?lat=${latitude}&lon=${longitude}`;
+                    },
+                    (error) => {
+                        // Handle the error case
+                        if (error.code === error.PERMISSION_DENIED) {
+                            window.location.href = '/error';
+                        }
+                    }
+                );
             } else {
                 window.location.href = '/error';
             }
-        }
-
-        function successCallback(position) {
-            console.log("Latitude: " + position.coords.latitude + ", Longitude: " + position.coords.longitude);
-        }
-
-        function errorCallback(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    console.log("User denied the request for Geolocation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    console.log("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    console.log("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    console.log("An unknown error occurred.");
-                    break;
-            }
-            window.location.href = '/error';
         }
 
         document.addEventListener('DOMContentLoaded', (event) => {
             handleLocationAccess();
         });
     </script>
+
+
 </body>
 
 </html>

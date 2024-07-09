@@ -577,15 +577,26 @@ ul.list-inline .list-inline-item {
 	-ms-flex-align: center;
 	align-items: center;
 }
-.dropdown-menu.chat-drop-menu .dropdown-item i {
+/* .dropdown-menu.chat-drop-menu .dropdown-item i {
 	font-size: 16px;
 	color: #424242;
+} */
+
+.dropdown-menu.chat-drop-menu .dropdown-item span {
+	font-size: 14px;
+	color: #424242;
+}
+/* .dropdown-menu .dropdown-item:hover i,
+.dropdown-menu .dropdown-item:hover span,
+.dropdown-menu a:hover {
+	color: #FFFFFF;
 }
 .dropdown-menu .dropdown-item:hover,
 .dropdown-menu .dropdown-item:focus,
 .dropdown-menu .dropdown-item:active {
-	background-color: #F8ECFF;
-}
+	color: #FFFFFF;
+	background-color: rgba(155, 89, 182,0.4);
+} */
 
 .dropdown-menu .dropdown-item span {
 	margin-right: 10px;

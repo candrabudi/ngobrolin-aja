@@ -18,8 +18,11 @@
                             <input type="file" name="multiple_images[]" style="display: none;" multiple>
                             <div class="dropdown-menu dropdown-menu-end">
                                 <label for="galleryInput" class="dropdown-item gallery-trigger">
-                                    <span><i class="bx bx-image"></i></span>Gallery
+                                    <span><i class="bx bx-image"></i></span>Galeri
                                 </label>
+                                <a href="#" id="locationTrigger" class="dropdown-item">
+                                    <span><i class="bx bx-map"></i></span>Lokasi
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -40,7 +43,6 @@
                     </button>
                 </div>
             </form>
-            
         </div>
     </div>
 </div>

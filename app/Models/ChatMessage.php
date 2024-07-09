@@ -15,6 +15,7 @@ class ChatMessage extends Model
         'to_id',
         'message',
         'is_read',
+        'is_location',
         'message_type',
         'updated_at',
     ];

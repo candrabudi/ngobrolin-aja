@@ -58,6 +58,7 @@ class MessageController extends Controller
             $sendMessage->to_id = $roomParticipant->user_id;
             $sendMessage->message = $encryptedMessage;
             $sendMessage->is_read = 0;
+            $sendMessage->is_location = $request->is_location ?? 0;
             $sendMessage->message_type = "personal";
             if ($cMessage) {
                 $sendMessage->message_reply_id = $cMessage->id;
@@ -133,6 +134,7 @@ class MessageController extends Controller
                     "is_read" => $sendMessage->is_read,
                     "is_sender" => Auth::user()->id == $sendMessage->from_id,
                     "is_replied" => $cMessage ? true : false,
+                    "is_location"=> $sendMessage->is_location,
                     "message_reply" => $cMessage ? $messageReply : null
                 ],
             ];
@@ -205,18 +207,20 @@ class MessageController extends Controller
                     "user_full_name" => $userFrom->full_name,
                     "message" => $messageContent,
                     "has_files" => [],
-                    "has_images" => $f->images->map(function ($image) {
+                    "has_images" => $f->images->map(function ($image) use ($privateKey) {
                         return [
-                            'file_name' => $image->file_name,
-                            'file_path' => asset('storage/' . $image->file_path),
+                            'file_name' => str_replace($privateKey, '', Crypt::decryptString($image->file_name)),
+                            'file_path' => asset('storage/' . str_replace($privateKey, '', Crypt::decryptString($image->file_path))),
                             'file_extension' => $image->file_extension,
                         ];
                     }),
                     "has_audios" => [],
                     "datetime" => $f->created_at->format('h:i A'),
+                    "created_at" => Carbon::parse($f->created_at)->format('Y-m-d H:i'),
                     "is_read" => $f->is_read,
                     "is_sender" => Auth::user()->id == $f->from_id,
                     "is_replied" => $f->message_reply_id != 0,
+                    "is_location" => $f->is_location,
                     "message_reply" => $messageReplyContent
                 ];
 

@@ -25,7 +25,6 @@
                     location: location
                 })
                 .then(response => {
-                    console.log('Location updated successfully', response);
                     scheduleNextLocationUpdate();
                 })
                 .catch(error => {
