@@ -196,6 +196,7 @@ class MessageController extends Controller
                             'profile_image' => UserProfile::where('user_id', $messageReply->from_id)->first()->profile_image,
                             'message' => str_replace($privateKey, '', $decryptedReply),
                             'datetime' => $messageReply->created_at->format('h:i A'),
+                            'is_location' => $messageReply->is_location,
                         ];
                     }
                 }
@@ -274,6 +275,7 @@ class MessageController extends Controller
             "has_audios" => [],
             "datetime" => $fetch->created_at->format('h:i A'),
             "is_read" => $fetch->is_read,
+            "is_location" => $fetch->is_location,
             "is_sender" => Auth::user()->id == $fetch->from_id,
             "is_replied" => Auth::user()->id == $fetch->from_id ? 1 : 2,
         ];

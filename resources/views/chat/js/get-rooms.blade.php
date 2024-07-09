@@ -10,6 +10,13 @@
                     const doubleTick = isSender && !user.sender_message_unread ? '<i class="bx bx-check-double"></i>' : '';
                     const singleTick = isSender && user.sender_message_unread ? '<i class="bx bx-check"></i>' : '';
                     const lastMessageTime = user.lastMessageTime ? new Date(user.lastMessageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+                    
+                    let lastMessage = 'Tidak ada pesan';
+                    if (user.is_location === 1) {
+                        lastMessage = 'berbagi lokasi terkini';
+                    } else if (user.lastmessage) {
+                        lastMessage = user.lastmessage;
+                    }
 
                     chatRoomList.innerHTML += `
                     <li class="user-list-item chat-user-list" data-room="${user.room_id}">
@@ -20,7 +27,7 @@
                             <div class="users-list-body">
                                 <div>
                                     <h5>${user.name}</h5>
-                                    <p>${user.lastmessage || 'Tidak ada pesan'}</p>
+                                    <p>${lastMessage}</p>
                                 </div>
                                 <div class="last-chat-time">
                                     <small class="text-muted">${lastMessageTime}</small>
