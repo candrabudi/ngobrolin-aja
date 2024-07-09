@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('room_icon')->nullable();
             $table->integer('room_created_by')->default(0);
             $table->enum('room_type', ['personal', 'group']);
+            $table->text('private_key');
             $table->timestamps();
         });
     }

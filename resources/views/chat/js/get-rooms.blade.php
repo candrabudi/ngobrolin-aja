@@ -5,12 +5,12 @@
                 const chatRoomList = document.getElementById('chat-room-list');
                 chatRoomList.innerHTML = '';
 
-                response.data.forEach(user => {
+                response.data.data.forEach(user => {
                     const isSender = user.sender_id === currentUserID;
-                    const doubleTick = isSender && !user.sender_message_unread ?
-                        '<i class="bx bx-check-double"></i>' : '';
-                    const singleTick = isSender && user.sender_message_unread ?
-                        '<i class="bx bx-check"></i>' : '';
+                    const doubleTick = isSender && !user.sender_message_unread ? '<i class="bx bx-check-double"></i>' : '';
+                    const singleTick = isSender && user.sender_message_unread ? '<i class="bx bx-check"></i>' : '';
+                    const lastMessageTime = user.lastMessageTime ? new Date(user.lastMessageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
                     chatRoomList.innerHTML += `
                     <li class="user-list-item chat-user-list" data-room="${user.room_id}">
                         <a href="javascript:;" class="chat-link">
@@ -23,17 +23,17 @@
                                     <p>${user.lastmessage || 'Tidak ada pesan'}</p>
                                 </div>
                                 <div class="last-chat-time">
-                                    <small class="text-muted">${new Date(user.lastMessageTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small>
+                                    <small class="text-muted">${lastMessageTime}</small>
                                     ${user.unread > 0 ? `
-                                            <div class="chat-pin">
-                                                <span class="count-message">${user.unread}</span>
-                                                ${doubleTick}
-                                                ${singleTick}
-                                            </div>` : `
-                                            <div class="chat-pin">
-                                                ${doubleTick}
-                                                ${singleTick}
-                                            </div>`}
+                                        <div class="chat-pin">
+                                            <span class="count-message">${user.unread}</span>
+                                            ${doubleTick}
+                                            ${singleTick}
+                                        </div>` : `
+                                        <div class="chat-pin">
+                                            ${doubleTick}
+                                            ${singleTick}
+                                        </div>`}
                                 </div>
                             </div>
                         </a>

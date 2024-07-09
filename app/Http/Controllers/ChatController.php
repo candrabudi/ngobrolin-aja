@@ -12,6 +12,8 @@ use App\Models\ChatRoomParticipant;
 use Auth;
 use DB;
 use MobileDetect;
+use Str;
+use Crypt;
 class ChatController extends Controller
 {
     public function index()
@@ -62,11 +64,14 @@ class ChatController extends Controller
                 ->where('room_type', 'personal')
                 ->where('user_id', $to_id)
                 ->first();
-            // return $checkRoom;
+            
             if (!$checkRoom) {
+                $privateKey = Str::random(64);
+
                 $room = new ChatRoom();
                 $room->room_name = "Private Chat";
                 $room->room_type = 'personal';
+                $room->private_key = $privateKey;
                 $room->save();
 
                 ChatRoomParticipant::create([
@@ -148,19 +153,30 @@ class ChatController extends Controller
                 ->where('from_id', '!=', $userId)
                 ->where('is_read', 0)
                 ->count();
-            if($lastMessage) {
-                $rooms[] = [
-                    "room_id" => $fr->chat_room_id,
-                    "name" => $user->Profile->full_name,
-                    "sender_id" => $lastMessage ? $lastMessage->from_id : null,
-                    "status" => $user->is_online == 1 ? "online" : "offline",
-                    "lastmessage" => $lastMessage->message ?? '',
-                    "profile" => $user->Profile->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
-                    "unread" => $unreadMessages,
-                    "sender_message_unread" => $senderLastMessage ? true : false,
-                    'lastMessageTime' => $lastMessage ? $lastMessage->created_at : null,
-                ];
+
+            // Decrypt the last message if it exists
+            $decryptedLastMessage = null;
+            if ($lastMessage) {
+                try {
+                    $privateKey = ChatRoom::find($fr->chat_room_id)->private_key;
+                    $decryptedMessageContent = Crypt::decryptString($lastMessage->message);
+                    $decryptedLastMessage = str_replace($privateKey, '', $decryptedMessageContent);
+                } catch (\Exception $e) {
+                    $decryptedLastMessage = $lastMessage->message; // fallback to original message if decryption fails
+                }
             }
+
+            $rooms[] = [
+                "room_id" => $fr->chat_room_id,
+                "name" => $user->Profile->full_name,
+                "sender_id" => $lastMessage ? $lastMessage->from_id : null,
+                "status" => $user->is_online == 1 ? "online" : "offline",
+                "lastmessage" => $decryptedLastMessage ?? '',
+                "profile" => $user->Profile->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+                "unread" => $unreadMessages,
+                "sender_message_unread" => $senderLastMessage ? true : false,
+                'lastMessageTime' => $lastMessage ? $lastMessage->created_at : null,
+            ];
         }
 
         $fetchGroupRooms = ChatRoomParticipant::join('chat_rooms', 'chat_rooms.id', '=', 'chat_room_participants.chat_room_id')
@@ -170,7 +186,7 @@ class ChatController extends Controller
             ->get();
 
         foreach ($fetchGroupRooms as $fr) {
-            $lastMessage = ChatMessage::where('chatroom_id', $fr->chat_room_id)
+            $lastMessage = ChatMessage::where('chat_room_id', $fr->chat_room_id)
                 ->orderBy('created_at', 'DESC')
                 ->first();
 
@@ -179,17 +195,33 @@ class ChatController extends Controller
                 ->where('is_read', 0)
                 ->count();
 
+            // Decrypt the last message if it exists
+            $decryptedLastMessage = null;
+            if ($lastMessage) {
+                try {
+                    $privateKey = ChatRoom::find($fr->chat_room_id)->private_key;
+                    $decryptedMessageContent = Crypt::decryptString($lastMessage->message);
+                    $decryptedLastMessage = str_replace($privateKey, '', $decryptedMessageContent);
+                } catch (\Exception $e) {
+                    $decryptedLastMessage = $lastMessage->message; // fallback to original message if decryption fails
+                }
+            }
+
             $rooms[] = [
                 "room_id" => $fr->chat_room_id,
                 "name" => $fr->name,
                 "status" => "online",
-                "lastmessage" => $lastMessage->message ?? '',
+                "lastmessage" => $decryptedLastMessage ?? '',
                 "profile" => $fr->icon_room,
                 "unread" => $unreadMessages,
             ];
         }
 
-        return $rooms;
+        return response()->json([
+            'status' => 'success',
+            'code' => 200,
+            'data' => $rooms
+        ]);
     }
 
     public function getDetailRoom(Request $request)

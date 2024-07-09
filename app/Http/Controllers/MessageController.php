@@ -14,6 +14,7 @@ use Pusher\Pusher;
 use Carbon\Carbon;
 use DB;
 use Validator;
+use Crypt;
 class MessageController extends Controller
 {
     public function sendMessage(Request $request)
@@ -40,16 +41,22 @@ class MessageController extends Controller
                 ->first();
 
             $userFrom = UserProfile::where('user_id', Auth::user()->id)->first();
+
             $cMessage = ChatMessage::select('id')
                 ->where('chat_room_id', $request->room_id)
                 ->where('id', $request->message_reply_id)
                 ->first();
 
+            $chatRoom = ChatRoom::find($request->room_id);
+            $privateKey = $chatRoom->private_key;
+
+            $encryptedMessage = Crypt::encryptString($request->message . $privateKey);
+
             $sendMessage = new ChatMessage;
             $sendMessage->chat_room_id = $request->room_id;
             $sendMessage->from_id = Auth::user()->id;
             $sendMessage->to_id = $roomParticipant->user_id;
-            $sendMessage->message = $request->message;
+            $sendMessage->message = $encryptedMessage;
             $sendMessage->is_read = 0;
             $sendMessage->message_type = "personal";
             if ($cMessage) {
@@ -64,10 +71,13 @@ class MessageController extends Controller
                     $filePath = $image->storeAs('uploads/chat_images', $fileName, 'public');
                     $fileExtension = $image->getClientOriginalExtension();
 
+                    $encryptedFileName = Crypt::encryptString($fileName);
+                    $encryptedFilePath = Crypt::encryptString($filePath);
+
                     ChatMessageImage::create([
                         'chat_message_id' => $sendMessage->id,
-                        'file_name' => $fileName,
-                        'file_path' => $filePath,
+                        'file_name' => $encryptedFileName,
+                        'file_path' => $encryptedFilePath,
                         'file_extension' => $fileExtension,
                     ]);
                 }
@@ -78,17 +88,20 @@ class MessageController extends Controller
             $has_audios = [];
             foreach ($sendMessage->images as $image) {
                 $has_images[] = [
-                    'file_name' => $image->file_name,
-                    'file_path' => asset('storage/' . $image->file_path),
+                    'file_name' => Crypt::decryptString($image->file_name),
+                    'file_path' => asset('storage/' . Crypt::decryptString($image->file_path)),
                     'file_extension' => $image->file_extension,
                 ];
             }
 
             if ($sendMessage->MessageReply) {
+                $decryptedMessage = Crypt::decryptString($sendMessage->MessageReply->message);
+                $messageContent = str_replace($privateKey, '', $decryptedMessage);
+
                 $messageReply = [
                     'full_name' => $sendMessage->MessageReply->full_name,
                     'profile_image' => $sendMessage->MessageReply->profile_image,
-                    'message' => $sendMessage->MessageReply->message,
+                    'message' => $messageContent,
                     'datetime' => $sendMessage->MessageReply->created_at->format('h:i A'),
                 ];
             }
@@ -112,7 +125,7 @@ class MessageController extends Controller
                     "user_id" => $sendMessage->from_id,
                     "full_name" => $userFrom->full_name,
                     "user_profile_image" => $userFrom->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
-                    "message" => $sendMessage->message,
+                    "message" => $request->message,
                     "has_images" => $has_images,
                     "has_files" => $has_files,
                     "has_audios" => $has_audios,
@@ -142,65 +155,88 @@ class MessageController extends Controller
 
     public function getMessage(Request $request)
     {
-        $room_id = $request->room_id;
+        try {
+            $room_id = $request->room_id;
 
-        // Update pesan yang belum dibaca oleh pengguna saat ini
-        ChatMessage::where('chat_room_id', $room_id)
-            ->where('from_id', '!=', Auth::user()->id)
-            ->update([
-                'is_read' => 1,
-                'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
-            ]);
+            ChatMessage::where('chat_room_id', $room_id)
+                ->where('from_id', '!=', Auth::user()->id)
+                ->update([
+                    'is_read' => 1,
+                    'updated_at' => Carbon::now()->format('Y-m-d H:i:s')
+                ]);
 
-        // Ambil pesan dari database terurut berdasarkan waktu dibuat
-        $fetch = ChatMessage::where('chat_room_id', $room_id)
-            ->orderBy('created_at', 'ASC')
-            ->get();
+            $chatRoom = ChatRoom::find($room_id);
+            $privateKey = $chatRoom->private_key;
 
-        $messages = [];
+            $fetch = ChatMessage::where('chat_room_id', $room_id)
+                ->orderBy('created_at', 'ASC')
+                ->get();
 
-        foreach ($fetch as $f) {
-            // Tandai pesan sebagai sudah dibaca jika pengguna bukan pengirim dan pesan belum dibaca
-            if ($f->from_id != Auth::user()->id && $f->is_read == 0) {
-                $f->is_read = 1;
-                $f->save();
+            $messages = [];
+
+            foreach ($fetch as $f) {
+                if ($f->from_id != Auth::user()->id && $f->is_read == 0) {
+                    $f->is_read = 1;
+                    $f->save();
+                }
+
+                $decryptedMessage = Crypt::decryptString($f->message);
+                $messageContent = str_replace($privateKey, '', $decryptedMessage);
+
+                $userFrom = UserProfile::where('user_id', $f->from_id)->first();
+                $messageReplyContent = null;
+                if ($f->message_reply_id) {
+                    $messageReply = ChatMessage::find($f->message_reply_id);
+                    if ($messageReply) {
+                        $decryptedReply = Crypt::decryptString($messageReply->message);
+                        $messageReplyContent = [
+                            'full_name' => UserProfile::where('user_id', $messageReply->from_id)->first()->full_name,
+                            'profile_image' => UserProfile::where('user_id', $messageReply->from_id)->first()->profile_image,
+                            'message' => str_replace($privateKey, '', $decryptedReply),
+                            'datetime' => $messageReply->created_at->format('h:i A'),
+                        ];
+                    }
+                }
+
+                $dmsg = [
+                    "id" => $f->id,
+                    "user_id" => $f->from_id,
+                    "user_profile_image" => $userFrom->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+                    "user_full_name" => $userFrom->full_name,
+                    "message" => $messageContent,
+                    "has_files" => [],
+                    "has_images" => $f->images->map(function ($image) {
+                        return [
+                            'file_name' => $image->file_name,
+                            'file_path' => asset('storage/' . $image->file_path),
+                            'file_extension' => $image->file_extension,
+                        ];
+                    }),
+                    "has_audios" => [],
+                    "datetime" => $f->created_at->format('h:i A'),
+                    "is_read" => $f->is_read,
+                    "is_sender" => Auth::user()->id == $f->from_id,
+                    "is_replied" => $f->message_reply_id != 0,
+                    "message_reply" => $messageReplyContent
+                ];
+
+                $messages[] = $dmsg;
             }
 
-            // Ambil profil pengirim pesan
-            $userFrom = UserProfile::where('user_id', $f->from_id)->first();
-
-            // Persiapkan data untuk pesan yang akan dikirimkan sebagai respons JSON
-            $dmsg = [
-                "id" => $f->id,
-                "user_id" => $f->from_id,
-                "user_profile_image" => $userFrom->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
-                "user_full_name" => $userFrom->full_name,
-                "message" => $f->message,
-                "has_files" => [], // Sementara kosong karena belum diimplementasikan
-                "has_images" => $f->images->map(function ($image) {
-                    return [
-                        'file_name' => $image->file_name,
-                        'file_path' => asset('storage/' . $image->file_path),
-                        'file_extension' => $image->file_extension,
-                    ];
-                }),
-                "has_audios" => [], // Sementara kosong karena belum diimplementasikan
-                "datetime" => $f->created_at->format('h:i A'),
-                "is_read" => $f->is_read,
-                "is_sender" => Auth::user()->id == $f->from_id,
-                "is_replied" => $f->message_reply_id != 0 ? true : false,
-                "message_reply" => $f->MessageReply
-            ];
-
-            $messages[] = $dmsg;
+            return response()->json([
+                'status' => 'success',
+                'code' => 200,
+                'data' => $messages
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'failed',
+                'code' => 500,
+                'message' => $e->getMessage()
+            ]);
         }
-
-        return response()->json([
-            'status' => 'success',
-            'code' => 200,
-            'data' => $messages
-        ]);
     }
+
     public function getSingleMessage($message_id)
     {
         $fetch = ChatMessage::select('chat_messages.*', 'up.full_name', 'up.profile_image')
@@ -208,22 +244,27 @@ class MessageController extends Controller
             ->join('user_profiles as up', 'up.user_id', '=', 'chat_messages.from_id')
             ->first();
 
-        if(!$fetch) {
-            return response()
-                ->json([
-                    'status' => 'failed', 
-                    'code' => 400, 
-                    'message' => 'No Data Single Message', 
-                    'data' => null
-                ], 400);
+        if (!$fetch) {
+            return response()->json([
+                'status' => 'failed', 
+                'code' => 400, 
+                'message' => 'No Data Single Message', 
+                'data' => null
+            ], 400);
         }
+
+        $chatRoom = ChatRoom::find($fetch->chat_room_id);
+        $privateKey = $chatRoom->private_key;
+
+        $decryptedMessage = Crypt::decryptString($fetch->message);
+        $messageContent = str_replace($privateKey, '', $decryptedMessage);
 
         $dmsg = [
             "id" => $fetch->id,
             "user_id" => $fetch->from_id,
             "user_profile_image" => $fetch->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
             "user_full_name" => $fetch->full_name,
-            "message" => $fetch->message,
+            "message" => $messageContent,
             "has_images" => [],
             "has_files" => [],
             "has_audios" => [],
@@ -233,13 +274,12 @@ class MessageController extends Controller
             "is_replied" => Auth::user()->id == $fetch->from_id ? 1 : 2,
         ];
 
-        return response()
-            ->json([
-                'status' => 'success', 
-                'code' => 200, 
-                'message' => 'Success Get Single Message',
-                'data' => $dmsg
-            ]);
+        return response()->json([
+            'status' => 'success', 
+            'code' => 200, 
+            'message' => 'Success Get Single Message',
+            'data' => $dmsg
+        ]);
     }
 
     public function updateReadMessage(Request $request)
