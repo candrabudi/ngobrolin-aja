@@ -3,7 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">
-                    Languages
+                    Bahasa
                 </h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span class="material-icons">close</span>
@@ -13,10 +13,10 @@
                 <div class="languages-group mb-4">
                     <div>
                         <select class="select">
-                            <option>Choose Language</option>
+                            <option>Pilih Bahasa</option>
                             <option>English</option>
-                            <option>French</option>
-                            <option>German</option>
+                            <option>Indonesia</option>
+                            <option>Spain</option>
                         </select>
                     </div>
                 </div>

@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Chat | Kirai</title>
+    <title>Chat | Ngobrol Yuk</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/1711/1711178.png">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/logo-chat.png') }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
@@ -50,6 +50,39 @@
         @include('layouts.modal.logout')
         @include('layouts.modal.success-alert')
 
+    </div>
+
+    <div id="joinCallDialog" class="dialog" onmousedown="startDrag(event)" style="display: none;">
+        <div class="dialog-header">
+            <span class="dialog-title">Video Call</span>
+            <div class="dialog-controls">
+                <button type="button" class="dialog-btn dialog-maximize-btn"
+                    onclick="maximizeDialog('joinCallDialog')">
+                    <i class="bx bx-fullscreen"></i>
+                </button>
+            </div>
+        </div>
+        <div class="dialog-body">
+            <div class="call-box incoming-box">
+                <div class="call-wrapper">
+                    <div class="call-inner">
+                        <div class="call-user">
+                            <video id="localVideo" autoplay muted></video>
+                            <h4 id="video-full-name">Mark Villiams</h4>
+                        </div>
+                        <div class="call-items">
+                            <a href="#" class="btn call-item btn-end-call" style="margin-right: 10px;"
+                                onclick="closeDialog()">
+                                <i class="bx bx-x"></i>
+                            </a>
+                            <a href="#" class="btn call-item btn-voice-call" onclick="switchToVoiceCall()">
+                                <i class="bx bx-phone"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
@@ -107,14 +140,10 @@
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (position) => {
-                        // Handle the successful retrieval of the location
                         const latitude = position.coords.latitude;
                         const longitude = position.coords.longitude;
-                        // Process the coordinates as needed, for example:
-                        // window.location.href = `/your-endpoint?lat=${latitude}&lon=${longitude}`;
                     },
                     (error) => {
-                        // Handle the error case
                         if (error.code === error.PERMISSION_DENIED) {
                             window.location.href = '/error';
                         }

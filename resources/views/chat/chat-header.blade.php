@@ -34,8 +34,7 @@
                 </a>
             </li>
             <li class="list-inline-item" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Voice Call">
-                <a href="javascript:void(0)" class="btn btn-outline-light" data-bs-toggle="modal"
-                    data-bs-target="#voice_call">
+                <a href="javascript:void(0)" class="btn btn-outline-light" id="open-voice-call">
                     <i class="bx bx-phone"></i>
                 </a>
             </li>

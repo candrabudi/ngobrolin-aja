@@ -8,6 +8,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserLocationController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\CallController;
 use Illuminate\Http\Request;
 
 /*
@@ -39,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/user/update-activity', [UserController::class, 'updateUserActivity'])->name('user.activity.update');
     Route::get('/setting', [SettingController::class, 'index'])->name('setting');
+    Route::post('/call/start', [CallController::class, 'startCall'])->name('startCall');
 
     Route::post('/pusher/auth', function (Request $request) {
         $authenticated = false;

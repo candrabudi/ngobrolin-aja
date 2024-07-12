@@ -7489,6 +7489,29 @@ a.vert-icon {
 	box-shadow: 0 50px 0 0 #fff inset;
 	color: #680A83 !important;
 }
+
+.btn-video-call {
+	color: #fff !important;
+	background: #182C61 !important;
+	border-color: #182C61!important;
+	border: 2px solid #182C61!important;
+}
+.btn-video-call:hover {
+	box-shadow: 0 50px 0 0 #fff inset;
+	color: #182C61 !important;
+}
+
+.btn-end-call {
+	color: #fff !important;
+	background: #6D214F !important;
+	border-color: #6D214F!important;
+	border: 2px solid #6D214F!important;
+}
+.btn-end-call:hover {
+	box-shadow: 0 50px 0 0 #fff inset;
+	color: #6D214F !important;
+}
+
 .btn-secondary {
 	color: #424242;
 	background: #fff!important;

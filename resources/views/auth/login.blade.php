@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Login | Kirai</title>
+    <title>Login | Ngobrol Yuk</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/1711/1711178.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -39,9 +39,9 @@
             <div class="login-wrapper">
                 <header class="logo-header">
                     <a href="index.html" class="logo-brand">
-                        <img src="https://cdn-icons-png.flaticon.com/512/1711/1711178.png" width="50" alt="Logo"
+                        <img src="{{ asset('assets/img/logo-chat.png') }}" width="50" alt="Logo"
                             class="img-fluid logo-dark">
-                        <h5>KIRAI</h5>
+                        <h5>Ngobrol Yuk</h5>
                     </a>
                 </header>
                 <div class="login-inbox">
@@ -49,7 +49,7 @@
                         <div class="login-auth-wrap">
                             <div class="login-content-head">
                                 <h3>Login</h3>
-                                <p>Hi Selamat Datang Kembali ke Kirai</p>
+                                <p>Hi Selamat Datang Kembali ke Ngobrol Yuk</p>
                             </div>
                         </div>
                         <form id="loginForm">
@@ -115,7 +115,7 @@
                                 '<img src="https://cdn-icons-png.flaticon.com/512/6785/6785304.png" width="80" alt="Success" class="img-fluid">'
                             );
                             $('#modal-message').text(
-                                'Kamu Berhasil Login, nikmati berbagai fitur chat dari Kirai'
+                                'Kamu Berhasil Login, nikmati berbagai fitur chat dari Ngobrol Yuk'
                             );
                             $('#modal-title').text('Berhasil Login');
                         } else {

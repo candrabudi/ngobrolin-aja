@@ -22,19 +22,17 @@
                     <div class="profile-card">
                         <div class="profile-cover text-center">
                             <label class="profile-cover-avatar">
-                                <img class="avatar-img" src="assets/img/avatar/avatar-2.jpg" alt="Profile Image">
+                                <img class="avatar-img" src="{{ Auth::user()->Profile->profile_image }}" width="200" height="200" alt="Profile Image">
                             </label>
                         </div>
                         <div class="profile-info">
                             <div class="profile-listout">
                                 <p class="info-title mb-0">Nama Lengkap</p>
-                                <span class="info-text"><img src="assets/img/icon/smile-01.svg" class="ms-1"
-                                        alt="Image"> Alex Smith <img src="assets/img/icon/smile-01.svg" class="me-1"
-                                        alt="Image"></span>
+                                <span class="info-text">{{ Auth::user()->Profile->full_name }}</span>
                             </div>
                             <div class="profile-listout">
-                                <p class="info-title mb-0">About</p>
-                                <span class="info-text">Can’t Talk, WhatsApp only</span>
+                                <p class="info-title mb-0">Tentang</p>
+                                <span class="info-text">Lorem Ipsum Is Dolor Amet</span>
                             </div>
                         </div>
                     </div>

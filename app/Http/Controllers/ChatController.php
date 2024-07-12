@@ -18,12 +18,7 @@ class ChatController extends Controller
 {
     public function index()
     {
-        $isMobile = MobileDetect::isMobile();
-        if($isMobile) {
-            return view('mobile.index');
-        }else{
-            return view('chat.index');
-        }
+        return view('chat.index');
     }
 
     public function getRoomChat()

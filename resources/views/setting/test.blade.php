@@ -93,7 +93,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="settings.html" class="chat-unread active" data-bs-toggle="tooltip"
+                                <a href="{{ route('setting') }}" class="chat-unread active" data-bs-toggle="tooltip"
                                     data-bs-placement="right" title data-bs-original-title="Settings">
                                     <i class="bx bx-cog"></i>
                                 </a>
@@ -116,7 +116,7 @@
                                         <img src="assets/img/avatar/avatar-2.jpg" alt>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end">
-                                        <a href="settings.html" class="dropdown-item"><span><i
+                                        <a href="{{ route('setting') }}" class="dropdown-item"><span><i
                                                     class="bx bx-cog"></i></span>Settings</a>
                                         <a href="email-login.html" class="dropdown-item"><span><i
                                                     class="bx bx-log-out"></i></span>Logout </a>
@@ -1696,7 +1696,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="logout-group mb-4">
-                            <p>Are you sure you want to log out?</p>
+                            <p>Yakin kamu ingin keluar??</p>
                         </div>
                         <div class="mute-chat-btn">
                             <a class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">

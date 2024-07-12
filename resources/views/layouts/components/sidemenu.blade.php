@@ -1,6 +1,6 @@
 <div class="sidebar-menu">
     <div class="logo-col">
-        <a href="index.html"><img src="https://cdn-icons-png.flaticon.com/512/1711/1711178.png" width="50"
+        <a href="index.html"><img src="{{ asset('assets/img/logo-chat.png') }}" width="35"
                 alt="Logo"></a>
     </div>
     <div class="menus-col">
@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="settings.html" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
+                    <a href="{{ route('setting') }}" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
                         data-bs-original-title="Settings">
                         <i class="bx bx-cog"></i>
                     </a>
