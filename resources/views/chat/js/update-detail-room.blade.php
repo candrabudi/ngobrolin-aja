@@ -8,9 +8,9 @@
             document.querySelector('.user-details .last-seen').textContent = 'Online';
         } else if (roomData.last_seen) {
             let lastSeen = calculateLastSeen(roomData.last_seen);
-            document.querySelector('.user-details .last-seen').textContent = 'Last Seen ' + lastSeen;
+            document.querySelector('.user-details .last-seen').textContent = 'Terakhir Dilihat ' + lastSeen;
         } else {
-            document.querySelector('.user-details .last-seen').textContent = 'Last Seen: Not Available';
+            document.querySelector('.user-details .last-seen').textContent = 'Terakhir Dilihat: Tidak Ada';
         }
     }
 </script>

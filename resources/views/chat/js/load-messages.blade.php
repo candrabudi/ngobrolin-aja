@@ -1,6 +1,10 @@
 <script>
     function loadMessages(roomId) {
-        axios.get('{{ route('message.list') }}', {
+        const token = localStorage.getItem('token');
+        axios.get('{{ env('API_SECURE_MESSANGER') }}/v1/message/list', {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                },
                 params: {
                     room_id: roomId
                 }

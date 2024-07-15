@@ -13,9 +13,9 @@
             <img src="assets/img/avatar/avatar-2.jpg" class="rounded-circle" alt="image">
         </figure>
         <div class="mt-1">
-            <h5>Mark Villiams</h5>
-            <small class="last-seen">
-                Last Seen at 07:15 PM
+            <h5></h5>
+            <small class="last-seen" style="font-size: 12px;">
+                
             </small>
         </div>
     </div>

@@ -1,12 +1,13 @@
 <script>
     function loadDetailRoom(roomId) {
-        axios.get('{{ route('chat.room.detail') }}', {
-                params: {
-                    room_id: roomId
+        const token = localStorage.getItem('token');
+        axios.get('{{ env('API_SECURE_MESSANGER') }}/v1/room-chat/detail/' + roomId, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
                 }
             })
             .then(response => {
-                updateRoomDetails(response.data);
+                updateRoomDetails(response.data.data);
                 loadMessages(roomId);
             })
             .catch(error => console.error('Error loading room details:', error));

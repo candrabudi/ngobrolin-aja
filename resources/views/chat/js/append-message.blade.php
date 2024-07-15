@@ -95,7 +95,7 @@
             <p style="text-align: left;">${message.message}</p>
             ${hasImages}
             ${hasFiles}
-            <span style="display: block;text-align: right; color: #7f8c8d;font-size: 12px;margin-top: -20px;">${message.datetime} ${message.is_sender ? `<i class="bx ${message.is_read ? 'bx-check-double' : 'bx-check'} me-1 inactive-check"></i>` : ''}</span>
+            <span style="display: block;text-align: right; color: #7f8c8d;font-size: 10px;margin-top: 20px;">${message.datetime} ${message.is_sender ? `<i class="bx ${message.is_read ? 'bx-check-double' : 'bx-check'} me-1 inactive-check"></i>` : ''}</span>
         </div>` : '');
 
         let messageElement;

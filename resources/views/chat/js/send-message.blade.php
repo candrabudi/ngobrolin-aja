@@ -1,4 +1,6 @@
 <script>
+    const tokenJwtSendMessage = localStorage.getItem('token');
+
     function adjustTextareaHeight() {
         const messageInput = document.getElementById('messageInput');
         messageInput.style.height = 'auto';
@@ -35,25 +37,26 @@
             formData.append('images[]', file);
         });
 
-        axios.post('{{ route('message.send') }}', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        })
-        .then(function(response) {
-            if (response.data.status === 'success') {
-                document.getElementById('messageInput').value = '';
-                previewImagesContainer.innerHTML = '';
-                document.querySelector('.preview-image-upload').classList.add('d-none');
-                document.querySelector('#forwardChatMsg').classList.add('d-none');
-            } else {
-                showToast('Failed to send message: ' + response.data.message);
-            }
-        })
-        .catch(function(error) {
-            console.error('Error sending message:', error);
-            showToast('An error occurred while sending the message.');
-        });
+        axios.post('{{ env('API_SECURE_MESSANGER') }}/v1/message/send', formData, {
+                headers: {
+                    'Authorization': 'Bearer ' + tokenJwtSendMessage,
+                    'Content-Type': 'multipart/form-data',
+                }
+            })
+            .then(function(response) {
+                if (response.data.status === 'success') {
+                    document.getElementById('messageInput').value = '';
+                    previewImagesContainer.innerHTML = '';
+                    document.querySelector('.preview-image-upload').classList.add('d-none');
+                    document.querySelector('#forwardChatMsg').classList.add('d-none');
+                } else {
+                    showToast('Failed to send message: ' + response.data.message);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error sending message:', error);
+                showToast('An error occurred while sending the message.');
+            });
     }
 
     function handleEnterKeyPress(event) {
@@ -84,31 +87,32 @@
                 formData.append('message_reply_id', messageReplyId);
                 formData.append('is_location', 1);
 
-                axios.post('{{ route('message.send') }}', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
-                .then(function(response) {
-                    if (response.data.status === 'success') {
-                        document.getElementById('messageInput').value = '';
-                        document.querySelector('.preview-image-upload').innerHTML = '';
-                        document.querySelector('.preview-image-upload').classList.add('d-none');
-                        document.querySelector('#forwardChatMsg').classList.add('d-none');
-                    } else {
-                        showToast('Failed to send message: ' + response.data.message);
-                    }
-                })
-                .catch(function(error) {
-                    console.error('Error sending message:', error);
-                    showToast('An error occurred while sending the message.');
-                });
+                axios.post('{{ env('API_SECURE_MESSANGER') }}/v1/message/send', formData, {
+                        headers: {
+                            'Authorization': 'Bearer ' + tokenJwtSendMessage,
+                            'Content-Type': 'multipart/form-data',
+                        }
+                    })
+                    .then(function(response) {
+                        if (response.data.status === 'success') {
+                            document.getElementById('messageInput').value = '';
+                            document.querySelector('.preview-image-upload').innerHTML = '';
+                            document.querySelector('.preview-image-upload').classList.add('d-none');
+                            document.querySelector('#forwardChatMsg').classList.add('d-none');
+                        } else {
+                            showToast('Failed to send message: ' + response.data.message);
+                        }
+                    })
+                    .catch(function(error) {
+                        console.error('Error sending message:', error);
+                        showToast('An error occurred while sending the message.');
+                    });
             }, function(error) {
                 showToast('Unable to retrieve your location.');
             }, {
-                enableHighAccuracy: true, 
-                timeout: 10000, 
-                maximumAge: 0 
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
             });
         } else {
             showToast('Geolocation is not supported by this browser.');
@@ -116,12 +120,17 @@
     }
 
     function dataURLtoFile(dataurl, filename) {
-        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        var arr = dataurl.split(','),
+            mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]),
+            n = bstr.length,
+            u8arr = new Uint8Array(n);
         while (n--) {
             u8arr[n] = bstr.charCodeAt(n);
         }
-        return new File([u8arr], filename, { type: mime });
+        return new File([u8arr], filename, {
+            type: mime
+        });
     }
 
     function showToast(message) {
@@ -132,14 +141,14 @@
             <span>${message}</span>
             <button class="close-btn">&times;</button>
         `;
-        
+
         toast.querySelector('.close-btn').addEventListener('click', () => {
             toast.classList.remove('show');
             setTimeout(() => toast.remove(), 300);
         });
 
         toastContainer.appendChild(toast);
-        
+
         setTimeout(() => {
             toast.classList.add('show');
         }, 100);

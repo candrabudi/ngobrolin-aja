@@ -99,45 +99,42 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#loginForm').on('submit', function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
                 e.preventDefault();
-
-                axios.post('{{ route('login.process') }}', $(this).serialize(), {
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        }
-                    })
+    
+                axios.post('{{ env('API_SECURE_MESSANGER') }}/v1/login', new FormData(this))
                     .then(function(response) {
                         if (response.data.status === 'success') {
-                            $('#modal-image').html(
-                                '<img src="https://cdn-icons-png.flaticon.com/512/6785/6785304.png" width="80" alt="Success" class="img-fluid">'
-                            );
-                            $('#modal-message').text(
-                                'Kamu Berhasil Login, nikmati berbagai fitur chat dari Ngobrol Yuk'
-                            );
-                            $('#modal-title').text('Berhasil Login');
-                        } else {
-                            $('#modal-image').html(
-                                '<img src="https://cdn-icons-png.flaticon.com/512/753/753345.png" width="80" alt="Error" class="img-fluid">'
-                            );
-                            $('#modal-message').text(response.data.message);
-                            $('#modal-title').text('Gagal Login');
-                        }
-                        $('#Success-group').modal('show');
-                        $('#modal-ok').one('click', function() {
-                            if (response.data.status === 'success') {
+                            const data = response.data.data;
+    
+                            // Store token and expiration in localStorage
+                            localStorage.setItem('token', data.token);
+                            localStorage.setItem('expires_at', data.expires_at);
+    
+                            // Show success modal
+                            document.getElementById('modal-image').innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/6785/6785304.png" width="80" alt="Success" class="img-fluid">';
+                            document.getElementById('modal-message').textContent = 'Kamu Berhasil Login, nikmati berbagai fitur chat dari Ngobrol Yuk';
+                            document.getElementById('modal-title').textContent = 'Berhasil Login';
+                            $('#Success-group').modal('show');
+                            
+                            // Redirect on modal close
+                            document.getElementById('modal-ok').addEventListener('click', function() {
                                 window.location.href = '/chat';
-                            }
-                        });
+                            });
+                        } else {
+                            // Show error modal
+                            document.getElementById('modal-image').innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/753/753345.png" width="80" alt="Error" class="img-fluid">';
+                            document.getElementById('modal-message').textContent = response.data.message;
+                            document.getElementById('modal-title').textContent = 'Gagal Login';
+                            $('#Success-group').modal('show');
+                        }
                     })
                     .catch(function(error) {
-                        $('#modal-image').html(
-                            '<img src="https://cdn-icons-png.flaticon.com/512/753/753345.png" width="80" alt="Error" class="img-fluid">'
-                        );
-                        $('#modal-message').text(error.response.data.message);
-                        $('#modal-title').text('Gagal Login');
+                        // Show error modal
+                        document.getElementById('modal-image').innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/753/753345.png" width="80" alt="Error" class="img-fluid">';
+                        document.getElementById('modal-message').textContent = error.response.data.message;
+                        document.getElementById('modal-title').textContent = 'Gagal Login';
                         $('#Success-group').modal('show');
                     });
             });

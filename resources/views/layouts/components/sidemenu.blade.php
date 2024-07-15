@@ -57,11 +57,7 @@
                 <li>
                     <div class="avatar avatar-online">
                         <a href="#" class="chat-profile-icon" data-bs-toggle="dropdown">
-                            @if (Auth::user()->profile->profile_image != null)
-                                <img src="{{ Auth::user()->profile->profile_image }}" alt>
-                            @else
-                                <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt>
-                            @endif
+                            
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
                             <a href="/setting" class="dropdown-item">

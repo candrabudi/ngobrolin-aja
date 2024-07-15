@@ -1,0 +1,12 @@
+{
+  "name": "agora-token-generator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "generateToken.js",
+  "scripts": {
+    "generate-token": "node generateToken.js"
+  },
+  "dependencies": {
+    "agora-access-token": "^2.0.4"
+  }
+}

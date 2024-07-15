@@ -27,7 +27,7 @@ Route::group(['middleware' => 'guest'], function () {
     Route::post('/process/login', [AuthController::class, 'loginProcess'])->name('login.process');
 });
 Route::middleware('auth')->post('/update-location', [UserLocationController::class, 'updateLocation']);
-Route::group(['middleware' => 'auth'], function () {
+// Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-contact', [ContactController::class, 'getContact'])->name('contact.get');
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.home');
     Route::get('/chat/room/detail', [ChatController::class, 'getDetailRoom'])->name('chat.room.detail');
@@ -71,4 +71,4 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-});
+// });

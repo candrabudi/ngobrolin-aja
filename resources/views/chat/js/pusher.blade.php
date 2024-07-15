@@ -1,11 +1,12 @@
 <script>
+    const tokenJwt = localStorage.getItem('token');
     var csrfToken = $('meta[name="csrf-token"]').attr('content');
     var pusher = new Pusher('{{ env('PUSHER_APP_KEY') }}', {
         cluster: '{{ env('PUSHER_APP_CLUSTER') }}',
-        authEndpoint: '/pusher/auth',
+        authEndpoint: '{{ env('API_SECURE_MESSANGER') }}/v1/pusher/auth',
         auth: {
             headers: {
-                'X-CSRF-Token': csrfToken
+                'Authorization': 'Bearer ' + tokenJwt,
             }
         }
     });
