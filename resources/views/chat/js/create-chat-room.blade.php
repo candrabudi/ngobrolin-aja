@@ -7,8 +7,13 @@
             return;
         }
 
-        axios.post('{{ route('chat.create.private') }}', {
+        axios.post('{{ env('API_SECURE_MESSANGER') }}/v1/room-chat/private/create', {
                 user_id: selectedUser.value
+            }, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'multipart/form-data'
+                }
             })
             .then(response => {
                 if (response.data.status === 'success') {

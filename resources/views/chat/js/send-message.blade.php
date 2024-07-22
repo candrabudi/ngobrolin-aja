@@ -7,8 +7,17 @@
         messageInput.style.height = `${messageInput.scrollHeight}px`;
     }
 
+    function showLoading() {
+        document.getElementById('loadingSpinner').style.display = 'block';
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingSpinner').style.display = 'none';
+    }
+
     function handleFormSubmit(event) {
         event.preventDefault();
+        showLoading();
 
         const messageInput = document.getElementById('messageInput').value.trim();
         const messageReplyId = document.getElementById('messageReplyId').value;
@@ -17,11 +26,13 @@
 
         if (!messageInput && previewImagesContainer.children.length === 0) {
             showToast('Please type a message or upload images.');
+            hideLoading();
             return;
         }
 
         if (!roomId) {
             showToast('No chat room selected.');
+            hideLoading();
             return;
         }
 
@@ -31,9 +42,18 @@
         formData.append('message_reply_id', messageReplyId);
 
         const previewImages = previewImagesContainer.querySelectorAll('.img-container');
-        previewImages.forEach(imgContainer => {
-            const imageUrl = imgContainer.getAttribute('data-image-url');
-            const file = dataURLtoFile(imageUrl, 'image.png');
+        const imagesToSend = [];
+
+        previewImages.forEach((imgContainer, index) => {
+            if (index < 2) {
+                const imageUrl = imgContainer.getAttribute('data-image-url');
+                const file = dataURLtoFile(imageUrl,
+                `image${index + 1}_${new Date().getTime()}.png`); // Ensure unique filenames with timestamp
+                imagesToSend.push(file);
+            }
+        });
+
+        imagesToSend.forEach(file => {
             formData.append('images[]', file);
         });
 
@@ -45,9 +65,10 @@
             })
             .then(function(response) {
                 if (response.data.status === 'success') {
+                    // Clear the input and preview container
                     document.getElementById('messageInput').value = '';
                     previewImagesContainer.innerHTML = '';
-                    document.querySelector('.preview-image-upload').classList.add('d-none');
+                    previewImagesContainer.classList.add('d-none');
                     document.querySelector('#forwardChatMsg').classList.add('d-none');
                 } else {
                     showToast('Failed to send message: ' + response.data.message);
@@ -56,6 +77,9 @@
             .catch(function(error) {
                 console.error('Error sending message:', error);
                 showToast('An error occurred while sending the message.');
+            })
+            .finally(function() {
+                hideLoading();
             });
     }
 
@@ -66,13 +90,12 @@
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             handleFormSubmit(event);
-        } else if (event.key === 'Enter' && event.shiftKey) {
-
         }
     }
 
     function handleLocationClick(event) {
         event.preventDefault();
+        showLoading();
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -85,7 +108,7 @@
                 formData.append('room_id', roomId);
                 formData.append('message', `${latitude}, ${longitude}`);
                 formData.append('message_reply_id', messageReplyId);
-                formData.append('is_location', 1);
+                formData.append('is_message_location', 1);
 
                 axios.post('{{ env('API_SECURE_MESSANGER') }}/v1/message/send', formData, {
                         headers: {
@@ -95,6 +118,7 @@
                     })
                     .then(function(response) {
                         if (response.data.status === 'success') {
+                            // Clear the input and preview container
                             document.getElementById('messageInput').value = '';
                             document.querySelector('.preview-image-upload').innerHTML = '';
                             document.querySelector('.preview-image-upload').classList.add('d-none');
@@ -106,9 +130,13 @@
                     .catch(function(error) {
                         console.error('Error sending message:', error);
                         showToast('An error occurred while sending the message.');
+                    })
+                    .finally(function() {
+                        hideLoading();
                     });
             }, function(error) {
                 showToast('Unable to retrieve your location.');
+                hideLoading();
             }, {
                 enableHighAccuracy: true,
                 timeout: 10000,
@@ -116,6 +144,7 @@
             });
         } else {
             showToast('Geolocation is not supported by this browser.');
+            hideLoading();
         }
     }
 
@@ -138,9 +167,9 @@
         const toast = document.createElement('div');
         toast.classList.add('toast');
         toast.innerHTML = `
-            <span>${message}</span>
-            <button class="close-btn">&times;</button>
-        `;
+        <span>${message}</span>
+        <button class="close-btn">&times;</button>
+    `;
 
         toast.querySelector('.close-btn').addEventListener('click', () => {
             toast.classList.remove('show');
@@ -159,9 +188,30 @@
         }, 5000);
     }
 
+    function previewImages(files) {
+        const previewContainer = document.querySelector('.preview-image-upload');
+        previewContainer.innerHTML = '';
+        Array.from(files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const imgContainer = document.createElement('div');
+                imgContainer.classList.add('img-container');
+                imgContainer.setAttribute('data-image-url', event.target.result);
+                imgContainer.innerHTML =
+                    `<img src="${event.target.result}" alt="preview" style="width: 100px; height: 100px;">`;
+                previewContainer.appendChild(imgContainer);
+            };
+            reader.readAsDataURL(file);
+        });
+        previewContainer.classList.remove('d-none');
+    }
+
     document.getElementById('messageForm').onsubmit = handleFormSubmit;
-
     document.getElementById('locationTrigger').onclick = handleLocationClick;
-
     document.getElementById('messageInput').onkeydown = handleEnterKeyPress;
+    document.getElementById('imageUploadInput').onchange = function() {
+        previewImages(this.files);
+    };
+
+    adjustTextareaHeight();
 </script>

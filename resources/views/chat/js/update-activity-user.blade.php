@@ -1,6 +1,7 @@
 <script>
     $(document).ready(function() {
-        var currentUserID = {{ Auth::user()->id }};
+        const userProfile = JSON.parse(userProfileJSON);
+        const currentUserID = userProfile.user_id;
         var isUserActive = true;
         var idleTimeout = 5 * 60 * 1000;
         var awayTimeout = 5 * 60 * 1000;
@@ -54,7 +55,12 @@
 
             localStorage.setItem('userActivityStatus', isActive ? 'online' : 'offline');
 
-            axios.post('{{ route('user.activity.update') }}', updateData)
+            axios.post('{{ env('API_SECURE_MESSANGER') }}/v1/user/update-activity', updateData, {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                 .then(response => {
 
                 })

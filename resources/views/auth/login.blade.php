@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Login | Ngobrol Yuk</title>
+    <title>Login | Bicaro</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/1711/1711178.png">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -41,7 +41,7 @@
                     <a href="index.html" class="logo-brand">
                         <img src="{{ asset('assets/img/logo-chat.png') }}" width="50" alt="Logo"
                             class="img-fluid logo-dark">
-                        <h5>Ngobrol Yuk</h5>
+                        <h5>Bicaro</h5>
                     </a>
                 </header>
                 <div class="login-inbox">
@@ -49,7 +49,7 @@
                         <div class="login-auth-wrap">
                             <div class="login-content-head">
                                 <h3>Login</h3>
-                                <p>Hi Selamat Datang Kembali ke Ngobrol Yuk</p>
+                                <p>Hi Selamat Datang Kembali ke Bicaro</p>
                             </div>
                         </div>
                         <form id="loginForm">
@@ -114,7 +114,7 @@
     
                             // Show success modal
                             document.getElementById('modal-image').innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/6785/6785304.png" width="80" alt="Success" class="img-fluid">';
-                            document.getElementById('modal-message').textContent = 'Kamu Berhasil Login, nikmati berbagai fitur chat dari Ngobrol Yuk';
+                            document.getElementById('modal-message').textContent = 'Kamu Berhasil Login, nikmati berbagai fitur chat dari Bicaro';
                             document.getElementById('modal-title').textContent = 'Berhasil Login';
                             $('#Success-group').modal('show');
                             

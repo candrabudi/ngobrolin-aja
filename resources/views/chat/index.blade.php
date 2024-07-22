@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @section('content')
     @include('layouts.components.sidebar')
+    <div class="loading-spinner" id="loadingSpinner"></div>
     <div id="toastContainer" class="toast-container"></div>
     <div class="chat status-middle-bar d-flex align-items-center justify-content-center">
         <div class="status-right">
@@ -14,7 +15,8 @@
             </div>
         </div>
     </div>
-
+    {{-- <div id="local_stream" style="width: 400px; height: 300px;"></div>
+    <div id="remote_stream" style="width: 400px; height: 300px;"></div> --}}
     @include('chat.chat-message')
 
     <div class="modal fade" id="video_call" role="document">
@@ -157,8 +159,7 @@
         <div class="dialog-header">
             <span class="dialog-title">Video Call</span>
             <div class="dialog-controls">
-                <button type="button" class="dialog-btn dialog-maximize-btn"
-                    onclick="maximizeDialog('joinCallDialog')">
+                <button type="button" class="dialog-btn dialog-maximize-btn" onclick="maximizeDialog('joinCallDialog')">
                     <i class="bx bx-fullscreen"></i>
                 </button>
             </div>
@@ -187,6 +188,32 @@
     </div>
 @endsection
 @section('styles')
+    <style>
+        .loading-spinner {
+            display: none;
+            border: 8px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 8px solid #3498db;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
     @include('chat.css.styles')
 @endsection
 @section('scripts')
@@ -197,17 +224,61 @@
     <script src="https://cdn.jsdelivr.net/npm/agora-rtc-sdk-ng@latest"></script>
     @include('chat.js.gallery-input')
     <script>
-        const userProfileJSON = localStorage.getItem('user_profile');
-        if (userProfileJSON) {
-            const userProfile = JSON.parse(userProfileJSON);
-            var currentUserID = userProfile.user_id;
-        } else {
-            localStorage.clear();
-            window.location.href = '/login';
-        }
+        const client = AgoraRTC.createClient({
+            mode: 'rtc',
+            codec: 'vp8'
+        });
+
+        client.init('your_agora_app_id', function() {
+            console.log("AgoraRTC client initialized");
+
+            client.join(null, 'test-channel', null, function(uid) {
+                console.log("User " + uid + " join channel successfully");
+
+                const localStream = AgoraRTC.createStream({
+                    streamID: uid,
+                    audio: true,
+                    video: true,
+                    screen: false
+                });
+
+                localStream.init(function() {
+                    localStream.play('local_stream');
+                    client.publish(localStream, function(err) {
+                        console.log("Publish local stream error: " + err);
+                    });
+
+                    client.on('stream-added', function(evt) {
+                        const remoteStream = evt.stream;
+                        client.subscribe(remoteStream, function(err) {
+                            console.log("Subscribe stream failed", err);
+                        });
+                    });
+
+                    client.on('stream-subscribed', function(evt) {
+                        const remoteStream = evt.stream;
+                        remoteStream.play('remote_stream');
+                    });
+                }, function(err) {
+                    console.log("getUserMedia failed", err);
+                });
+            }, function(err) {
+                console.log("Join channel failed", err);
+            });
+        });
     </script>
-    
-    
+    <script>
+        const userProfileJSON = localStorage.getItem('user_profile');
+        // if (userProfileJSON) {
+        const userProfile = JSON.parse(userProfileJSON);
+        var currentUserID = userProfile.user_id;
+        // } else {
+        //     localStorage.clear();
+        //     window.location.href = '/login';
+        // }
+    </script>
+
+
     @include('chat.js.append-message')
     @include('chat.js.get-rooms')
     @include('chat.js.pusher')
@@ -250,6 +321,6 @@
             });
         }
     </script>
-    {{-- @include('chat.js.update-activity-user') --}}
+    @include('chat.js.update-activity-user')
     @include('chat.js.send-message')
 @endsection

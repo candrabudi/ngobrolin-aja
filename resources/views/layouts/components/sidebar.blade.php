@@ -7,12 +7,12 @@
                 <div class="select-group-chat">
                     <div class="dropdown">
                         <a href="javascript:;" class="dropdown-toggle" data-bs-toggle="dropdown">
-                            All Chats<i class="bx bx-chevron-down"></i>
+                            Semua Pesan<i class="bx bx-chevron-down"></i>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="chat.html">All Chat</a></li>
-                            <li><a class="dropdown-item" href="archive-chat.html">Archive Chat</a></li>
-                            <li><a class="dropdown-item" href="pinned-chat.html">Pinned Chat</a></li>
+                            <li><a class="dropdown-item" href="#">Semua Pesan</a></li>
+                            <li><a class="dropdown-item" href="#">Archive Pesan</a></li>
+                            <li><a class="dropdown-item" href="#">Pin Pesan</a></li>
                         </ul>
                     </div>
                 </div>

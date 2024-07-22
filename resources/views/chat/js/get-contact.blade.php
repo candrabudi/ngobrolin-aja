@@ -1,9 +1,26 @@
 <script>
     document.getElementById('newChatButton').addEventListener('click', function() {
-        axios.get('{{ route('contact.get') }}')
-            .then(response => {
+        // Ambil token dari local storage
+        const token = localStorage.getItem('token');
+
+        // Pastikan token ada sebelum melakukan permintaan
+        if (!token) {
+            console.error('Token tidak ditemukan di local storage');
+            return;
+        }
+
+        // Set header Authorization dengan token
+        axios.get('{{ env('API_SECURE_MESSANGER') }}/v1/contact/list', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => {
+            if (response.data.status === 'success') {
+                const userList = document.getElementById('user-list'); // Pastikan id userList ada di HTML
                 userList.innerHTML = '';
-                response.data.forEach(user => {
+                
+                response.data.data.forEach(user => {
                     const profileImage = user.profile_image ||
                         'https://cdn-icons-png.flaticon.com/512/847/847969.png';
                     userList.innerHTML += `
@@ -29,7 +46,10 @@
                             </div>
                         </li>`;
                 });
-            })
-            .catch(error => console.error('Error fetching the contact list:', error));
+            } else {
+                console.error('Failed to fetch contact list:', response.data.message);
+            }
+        })
+        .catch(error => console.error('Error fetching the contact list:', error));
     });
 </script>

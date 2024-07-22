@@ -7,8 +7,7 @@
     function appendMessage(message) {
         const lastMessage = messageContainer.lastElementChild;
         const lastMessageTime = lastMessage ? lastMessage.querySelector('.chat-profile-name label').textContent : null;
-        const lastMessageUser = lastMessage ? lastMessage.querySelector('.chat-profile-name h6').textContent.trim() :
-            null;
+        const lastMessageUser = lastMessage ? lastMessage.querySelector('.chat-profile-name h6').textContent.trim() : null;
         const isSameTime = lastMessageTime === message.created_at;
         const isSameUser = lastMessageUser && lastMessageUser.includes(message.user_full_name.trim());
 
@@ -19,7 +18,7 @@
                     <li style="padding: 5px;">
                         <div class="image-download-col">
                             <a href="${image.file_path}" data-fancybox="gallery" class="fancybox">
-                                <div style="display:inline-block; width: 100px; height:100px; background-image: url(${image.file_path}); background-size: cover;border: 2px solid #ecf0f1; border-radius: 8px;"></div>
+                                <div style="display:inline-block; width: 100px; height:100px; background-image: url(${image.file_path}); background-size: cover; border: 2px solid #ecf0f1; border-radius: 8px;"></div>
                             </a>
                         </div>
                     </li>
@@ -40,7 +39,7 @@
             </ul>
         </div>` : '';
 
-        const locationCoordinates = message.is_location == 1 ? message.message : null;
+        const locationCoordinates = message.is_message_location == 1 ? message.message : null;
 
         const locationIcon = locationCoordinates ? `
         <div class="message-content fancy-msg-box mt-2" style="min-width: 200px;">
@@ -74,10 +73,10 @@
                     </span>
                 </h6>
             </div>
-            ${message.message_reply.is_location == 1 ? "berbagi lokasi terkini" : message.message_reply.message}
+            ${message.message_reply.is_message_location == 1 ? "berbagi lokasi terkini" : message.message_reply.message}
         </div>` : '';
 
-        const textMessage = locationCoordinates ? locationIcon : (message.message ? `
+        const textMessage = locationCoordinates ? locationIcon : (message.message || hasImages || hasFiles) ? `
         <div class="message-content fancy-msg-box mt-2" style="min-width: 50px;">
             <div class="chat-profile-name${message.is_sender ? ' text-end' : ''}">
                 <div class="chat-action-btns ms-2">
@@ -96,7 +95,7 @@
             ${hasImages}
             ${hasFiles}
             <span style="display: block;text-align: right; color: #7f8c8d;font-size: 10px;margin-top: 20px;">${message.datetime} ${message.is_sender ? `<i class="bx ${message.is_read ? 'bx-check-double' : 'bx-check'} me-1 inactive-check"></i>` : ''}</span>
-        </div>` : '');
+        </div>` : '';
 
         let messageElement;
 

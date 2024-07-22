@@ -3,27 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\AgoraTokenService;
+use App\Services\AgoraService;
 
 class AgoraController extends Controller
 {
-    protected $tokenService;
+    protected $agoraService;
 
-    public function __construct(AgoraTokenService $tokenService)
+    public function __construct(AgoraService $agoraService)
     {
-        $this->tokenService = $tokenService;
+        $this->agoraService = $agoraService;
     }
 
     public function generateToken(Request $request)
     {
-        $channelName = $request->input('channel');
+        $channelName = $request->input('channelName');
         $uid = $request->input('uid');
         $role = $request->input('role');
 
-        $role = in_array($role, ['publisher', 'subscriber']) ? $role : 'subscriber';
-
-        $token = $this->tokenService->generateToken($channelName, $uid, $role);
+        $token = $this->agoraService->generateToken($channelName, $uid, $role);
 
         return response()->json(['token' => $token]);
+    }
+
+    public function index()
+    {
+        return view('call');
     }
 }

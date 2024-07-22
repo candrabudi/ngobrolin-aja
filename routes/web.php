@@ -9,6 +9,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserLocationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CallController;
+use App\Http\Controllers\AgoraController;
 use Illuminate\Http\Request;
 
 /*
@@ -21,6 +22,10 @@ use Illuminate\Http\Request;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/token', [AgoraController::class, 'generateToken']);
+Route::get('/call', [AgoraController::class, 'index']);
+Route::post('/broadcast-participants', [AgoraController::class, 'broadcastParticipantUpdate']);
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/login', [AuthController::class, 'login'])->name('login');
     Route::get('/', [AuthController::class, 'login'])->name('login');

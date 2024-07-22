@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Chat | Ngobrol Yuk</title>
+    <title>Chat | Bicaro</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/img/logo-chat.png') }}">
 
@@ -46,7 +46,8 @@
         <div class="dialog-header">
             <span class="dialog-title">Video Call</span>
             <div class="dialog-controls">
-                <button type="button" class="dialog-btn dialog-maximize-btn" onclick="maximizeDialog('joinCallDialog')">
+                <button type="button" class="dialog-btn dialog-maximize-btn"
+                    onclick="maximizeDialog('joinCallDialog')">
                     <i class="bx bx-fullscreen"></i>
                 </button>
             </div>
@@ -60,7 +61,8 @@
                             <h4 id="video-full-name">Mark Villiams</h4>
                         </div>
                         <div class="call-items">
-                            <a href="#" class="btn call-item btn-end-call" style="margin-right: 10px;" onclick="closeDialog()">
+                            <a href="#" class="btn call-item btn-end-call" style="margin-right: 10px;"
+                                onclick="closeDialog()">
                                 <i class="bx bx-x"></i>
                             </a>
                             <a href="#" class="btn call-item btn-voice-call" onclick="switchToVoiceCall()">
@@ -75,8 +77,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.3.0/pusher.min.js" integrity="sha512-tXL5mrkSoP49uQf2jO0LbvzMyFgki//znmq0wYXGq94gVF6TU0QlrSbwGuPpKTeN1mIjReeqKZ4/NJPjHN1d2Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script data-cfasync="false" src="{{ asset('cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pusher/8.3.0/pusher.min.js"
+        integrity="sha512-tXL5mrkSoP49uQf2jO0LbvzMyFgki//znmq0wYXGq94gVF6TU0QlrSbwGuPpKTeN1mIjReeqKZ4/NJPjHN1d2Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script data-cfasync="false" src="{{ asset('cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js') }}">
+    </script>
     <script src="{{ asset('assets/js/jquery-3.7.0.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
     <script src="{{ asset('assets/plugins/slimscroll/jquery.slimscroll.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
@@ -84,7 +89,8 @@
     <script src="{{ asset('assets/plugins/fancybox/jquery.fancybox.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
     <script src="{{ asset('assets/plugins/select2/js/select2.min.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
     <script src="{{ asset('assets/js/script.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
-    <script src="{{ asset('cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}" data-cf-settings="486412cb5ceb9f020c3dd6e7-|49" defer></script>
+    <script src="{{ asset('cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"
+        data-cf-settings="486412cb5ceb9f020c3dd6e7-|49" defer></script>
     @yield('scripts')
 
     <script>
@@ -112,12 +118,12 @@
                             localStorage.setItem('user_profile', JSON.stringify(response.data));
                         } else {
                             console.error('Error:', response.message);
-                            window.location.href = '/login';
+                            // window.location.href = '/login';
                         }
                     },
                     error: function(error) {
                         console.error('Error:', error);
-                        window.location.href = '/login';
+                        // window.location.href = '/login';
                     }
                 });
             }
@@ -137,7 +143,7 @@
                         $('#modal-message').text(response.message);
                         $('#modal-alert-success').modal('show');
                         $('#modal-ok').on('click', function() {
-                            window.location.href = '/login';
+                            // window.location.href = '/login';
                         });
                     },
                     error: function(error) {
@@ -167,6 +173,104 @@
             handleLocationAccess();
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const middleSection = document.getElementById('middle-section');
+
+            const fetchContacts = () => {
+                axios.get('{{ env('API_SECURE_MESSANGER') }}/v1/contact/list', {
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        }
+                    })
+                    .then(response => {
+                        if (response.data.status === 'success') {
+                            displayContacts(response.data.data);
+                        } else {
+                            console.error('Failed to get contacts:', response.data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching contacts:', error.response ? error.response.data :
+                            error.message);
+                    });
+            };
+
+            const displayContacts = (contacts) => {
+                const contactListContainer = document.getElementById('contact-list');
+                contactListContainer.innerHTML = ''; // Clear previous content
+
+                contacts.forEach(contact => {
+                    const contactItem = `
+                <li class="user-list-item">
+                    <div class="list-user-blk">
+                        <div class="avatar">
+                            <img src="${contact.profile_image}" class="rounded-circle" alt="${contact.full_name}">
+                        </div>
+                        <div class="users-list-body">
+                            <div>
+                                <h5>${contact.full_name}</h5>
+                                <p>Active</p>
+                            </div>
+                        </div>
+                        <div class="notify-check parti-notify-check">
+                            <div class="form-check d-flex align-items-center justify-content-start ps-0">
+                                <label class="custom-check mt-0 mb-0">
+                                    <input type="checkbox" name="participant_ids[]" value="${contact.user_id}">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            `;
+                    contactListContainer.innerHTML += contactItem;
+                });
+            };
+
+            // Fetch contacts when the page loads
+            fetchContacts();
+
+            // Handle the "Create Group" button click
+            document.getElementById('create-group').addEventListener('click', () => {
+                const selectedParticipants = Array.from(document.querySelectorAll(
+                        'input[name="participant_ids[]"]:checked'))
+                    .map(input => input.value);
+                const groupName = document.getElementById('group-name').value;
+                const groupDescription = document.getElementById('group-description').value;
+                const groupIcon = document.getElementById('avatar_upload').files[0];
+
+                const formData = new FormData();
+                formData.append('group_name', groupName);
+                formData.append('group_description', groupDescription);
+                formData.append('group_icon', groupIcon);
+                selectedParticipants.forEach(id => formData.append('participant_ids[]', id));
+
+                axios.post('{{ env('API_SECURE_MESSANGER') }}/v1/room-chat/group/create', formData, {
+                        headers: {
+                            'Authorization': 'Bearer ' + token,
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    })
+                    .then(response => {
+                        if (response.data.status === 'success') {
+                            const roomId = response.data.data.chat_room_id;
+                            localStorage.setItem('roomId', roomId);
+                            loadDetailRoom(roomId);
+                            getRooms();
+                        } else {
+                            alert('Failed to create chat room: ' + response.data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        alert('An error occurred while creating the chat room.');
+                    });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

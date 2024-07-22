@@ -49,24 +49,11 @@
                     <i class="bx bx-dots-vertical-rounded"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end">
-                    <a href="index.html" class="dropdown-item "><span><i class="bx bx-x"></i></span>Close
+                    <a href="#" class="dropdown-item "><span><i class="bx bx-x"></i></span>Close
                         Chat </a>
-                    <a href="#" class="dropdown-item" data-bs-toggle="modal"
-                        data-bs-target="#mute-notification"><span><i class="bx bx-volume-mute"></i></span>Mute
-                        Notification</a>
-                    <a href="#" class="dropdown-item" data-bs-toggle="modal"
-                        data-bs-target="#disappearing-messages"><span><i
-                                class="bx bx-time-five"></i></span>Disappearing Message</a>
-                    <a href="#" class="dropdown-item" data-bs-toggle="modal"
-                        data-bs-target="#clear-chat"><span><i class="bx bx-brush-alt"></i></span>Clear
-                        Message</a>
                     <a href="#" class="dropdown-item" data-bs-toggle="modal"
                         data-bs-target="#change-chat"><span><i class="bx bx-trash"></i></span>Delete
                         Chat</a>
-                    <a href="#" class="dropdown-item" data-bs-toggle="modal"
-                        data-bs-target="#report-user"><span><i class="bx bx-dislike"></i></span>Report</a>
-                    <a href="#" class="dropdown-item" data-bs-toggle="modal"
-                        data-bs-target="#block-user"><span><i class="bx bx-block"></i></span>Block</a>
                 </div>
             </li>
         </ul>

@@ -1,19 +1,17 @@
 <script>
     function getRooms() {
-
         const token = localStorage.getItem('token');
         const userProfileJSON = localStorage.getItem('user_profile');
-        if (userProfileJSON) {
-            const userProfile = JSON.parse(userProfileJSON);
-            var currentUserID = userProfile.user_id;
-        } else {
+
+        if (!userProfileJSON || !token) {
             localStorage.clear();
-            window.location.href = '/login';
-        }
-        if (!token) {
             window.location.href = '/login';
             return;
         }
+
+        const userProfile = JSON.parse(userProfileJSON);
+        const currentUserID = userProfile.user_id;
+
         axios.get('{{ env('API_SECURE_MESSANGER') }}/v1/room-chat/list', {
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -24,7 +22,7 @@
                 chatRoomList.innerHTML = '';
 
                 if (response.data.data.length === 0) {
-                    localStorage.clear();
+                    localStorage.removeItem('roomId'); // Hapus roomId jika tidak ada chat room
                 }
 
                 response.data.data.forEach(user => {

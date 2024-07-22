@@ -22,13 +22,13 @@
                     <div class="profile-card">
                         <div class="profile-cover text-center">
                             <label class="profile-cover-avatar">
-                                <img class="avatar-img" src="{{ Auth::user()->Profile->profile_image }}" width="200" height="200" alt="Profile Image">
+                                <img class="avatar-img" src="" width="200" height="200" alt="Profile Image">
                             </label>
                         </div>
                         <div class="profile-info">
                             <div class="profile-listout">
                                 <p class="info-title mb-0">Nama Lengkap</p>
-                                <span class="info-text">{{ Auth::user()->Profile->full_name }}</span>
+                                <span class="info-text"</span>
                             </div>
                             <div class="profile-listout">
                                 <p class="info-title mb-0">Tentang</p>
