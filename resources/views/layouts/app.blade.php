@@ -91,20 +91,19 @@
     <script src="{{ asset('assets/js/script.js') }}" type="486412cb5ceb9f020c3dd6e7-text/javascript"></script>
     <script src="{{ asset('cdn-cgi/scripts/7d0fa10a/cloudflare-static/rocket-loader.min.js') }}"
         data-cf-settings="486412cb5ceb9f020c3dd6e7-|49" defer></script>
-    @yield('scripts')
 
     <script>
         $(document).ready(function() {
             function checkToken() {
                 const token = localStorage.getItem('token');
-                const tokenExpiry = localStorage.getItem('expires_at');
-                if (!token || !tokenExpiry) {
-                    window.location.href = '/login';
-                } else {
+                // const tokenExpiry = localStorage.getItem('expires_at');
+                // if (!token) {
+                //     window.location.href = '/login';
+                // } else {
                     getUserProfile(token);
-                }
+                // }
             }
-
+    
             function getUserProfile(token) {
                 $.ajax({
                     url: '{{ env('API_SECURE_MESSANGER') }}/v1/user/get-profile',
@@ -118,17 +117,24 @@
                             localStorage.setItem('user_profile', JSON.stringify(response.data));
                         } else {
                             console.error('Error:', response.message);
-                            // window.location.href = '/login';
+                            // Handle errors other than 401 here
                         }
                     },
-                    error: function(error) {
-                        console.error('Error:', error);
-                        // window.location.href = '/login';
+                    error: function(xhr) {
+                        console.error('Error:', xhr);
+                        if (xhr.status === 401) {
+                            // Redirect to login on 401 error
+                            window.location.href = '/login';
+                        } else {
+                            // Handle other errors
+                            console.error('Unexpected error:', xhr.responseText);
+                        }
                     }
                 });
             }
-
+    
             checkToken();
+    
             $('#logoutButton').on('click', function(event) {
                 event.preventDefault();
                 $.ajax({
@@ -143,7 +149,7 @@
                         $('#modal-message').text(response.message);
                         $('#modal-alert-success').modal('show');
                         $('#modal-ok').on('click', function() {
-                            // window.location.href = '/login';
+                            window.location.href = '/login';
                         });
                     },
                     error: function(error) {
@@ -151,13 +157,14 @@
                     }
                 });
             });
-
+    
             function handleLocationAccess() {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         function(position) {
                             const latitude = position.coords.latitude;
                             const longitude = position.coords.longitude;
+                            // Handle the location data here
                         },
                         function(error) {
                             if (error.code === error.PERMISSION_DENIED) {
@@ -169,10 +176,11 @@
                     window.location.href = '/error';
                 }
             }
-
+    
             handleLocationAccess();
         });
     </script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const token = localStorage.getItem('token');
@@ -270,7 +278,7 @@
             });
         });
     </script>
-
+ @yield('scripts')
 </body>
 
 </html>

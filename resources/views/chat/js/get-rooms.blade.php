@@ -3,11 +3,11 @@
         const token = localStorage.getItem('token');
         const userProfileJSON = localStorage.getItem('user_profile');
 
-        if (!userProfileJSON || !token) {
-            localStorage.clear();
-            window.location.href = '/login';
-            return;
-        }
+        // if (!userProfileJSON || !token) {
+        //     localStorage.clear();
+        //     window.location.href = '/login';
+        //     return;
+        // }
 
         const userProfile = JSON.parse(userProfileJSON);
         const currentUserID = userProfile.user_id;
