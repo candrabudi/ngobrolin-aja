@@ -32,14 +32,11 @@
                                     <div class="dropdown-menu dropdown-menu-end">
                                         <a href="javascript:;" class="dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#new-chat" id="newChatButton">
-                                            <span><i class="bx bx-message-rounded-add"></i></span>New Chat
+                                            <span><i class="bx bx-message-rounded-add"></i></span>Obrolan Baru
                                         </a>
                                         <a href="javascript:;" class="dropdown-item" data-bs-toggle="modal"
                                             data-bs-target="#new-group"><span><i
-                                                    class="bx bx-user-circle"></i></span>Create Group</a>
-                                        <a href="javascript:;" class="dropdown-item" data-bs-toggle="modal"
-                                            data-bs-target="#invite-other"><span><i
-                                                    class="bx bx-user-plus"></i></span>Invite Others</a>
+                                                    class="bx bx-user-circle"></i></span>Buat Group</a>
                                     </div>
                                 </div>
                             </div>
