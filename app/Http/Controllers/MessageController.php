@@ -101,7 +101,7 @@ class MessageController extends Controller
 
                 $messageReply = [
                     'full_name' => $sendMessage->MessageReply->full_name,
-                    'profile_image' => $sendMessage->MessageReply->profile_image,
+                    'profile_img' => $sendMessage->MessageReply->profile_img,
                     'message' => $messageContent,
                     'datetime' => $sendMessage->MessageReply->created_at->format('h:i A'),
                 ];
@@ -125,7 +125,7 @@ class MessageController extends Controller
                     "room_id" => $request->room_id,
                     "user_id" => $sendMessage->from_id,
                     "full_name" => $userFrom->full_name,
-                    "user_profile_image" => $userFrom->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+                    "user_profile_image" => $userFrom->profile_img ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
                     "message" => $request->message,
                     "has_images" => $has_images,
                     "has_files" => $has_files,
@@ -193,7 +193,7 @@ class MessageController extends Controller
                         $decryptedReply = Crypt::decryptString($messageReply->message);
                         $messageReplyContent = [
                             'full_name' => UserProfile::where('user_id', $messageReply->from_id)->first()->full_name,
-                            'profile_image' => UserProfile::where('user_id', $messageReply->from_id)->first()->profile_image,
+                            'profile_img' => UserProfile::where('user_id', $messageReply->from_id)->first()->profile_img,
                             'message' => str_replace($privateKey, '', $decryptedReply),
                             'datetime' => $messageReply->created_at->format('h:i A'),
                             'is_location' => $messageReply->is_location,
@@ -204,7 +204,7 @@ class MessageController extends Controller
                 $dmsg = [
                     "id" => $f->id,
                     "user_id" => $f->from_id,
-                    "user_profile_image" => $userFrom->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+                    "user_profile_image" => $userFrom->profile_img ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
                     "user_full_name" => $userFrom->full_name,
                     "message" => $messageContent,
                     "has_files" => [],
@@ -244,7 +244,7 @@ class MessageController extends Controller
 
     public function getSingleMessage($message_id)
     {
-        $fetch = ChatMessage::select('chat_messages.*', 'up.full_name', 'up.profile_image')
+        $fetch = ChatMessage::select('chat_messages.*', 'up.full_name', 'up.profile_img')
             ->where('chat_messages.id', $message_id)
             ->join('user_profiles as up', 'up.user_id', '=', 'chat_messages.from_id')
             ->first();
@@ -267,7 +267,7 @@ class MessageController extends Controller
         $dmsg = [
             "id" => $fetch->id,
             "user_id" => $fetch->from_id,
-            "user_profile_image" => $fetch->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+            "user_profile_image" => $fetch->profile_img ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
             "user_full_name" => $fetch->full_name,
             "message" => $messageContent,
             "has_images" => [],

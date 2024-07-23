@@ -45,7 +45,7 @@ class UserController extends Controller
                 'room_id'   => $rp->chat_room_id,
                 'user_id'   =>  $user->id,
                 'room_name' =>  $user->Profile->full_name,
-                'room_icon' =>  $user->Profile->profile_image,
+                'room_icon' =>  $user->Profile->profile_img,
                 'last_seen' =>  $user->last_seen,
                 'is_online' =>  $user->is_online == 1 ? true : false,
                 'room_type' => "personal"

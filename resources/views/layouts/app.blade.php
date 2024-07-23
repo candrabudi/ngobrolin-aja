@@ -214,7 +214,7 @@
                 <li class="user-list-item">
                     <div class="list-user-blk">
                         <div class="avatar">
-                            <img src="${contact.profile_image}" class="rounded-circle" alt="${contact.full_name}">
+                            <img src="${contact.profile_img}" class="rounded-circle" alt="${contact.full_name}">
                         </div>
                         <div class="users-list-body">
                             <div>

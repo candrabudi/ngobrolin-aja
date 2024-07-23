@@ -166,7 +166,7 @@ class ChatController extends Controller
                 "sender_id" => $lastMessage ? $lastMessage->from_id : null,
                 "status" => $user->is_online == 1 ? "online" : "offline",
                 "lastmessage" => $decryptedLastMessage ?? '',
-                "profile" => $user->Profile->profile_image ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
+                "profile" => $user->Profile->profile_img ?? "https://cdn-icons-png.flaticon.com/512/847/847969.png",
                 "unread" => $unreadMessages,
                 "sender_message_unread" => $senderLastMessage ? true : false,
                 'lastMessageTime' => $lastMessage ? $lastMessage->created_at : null,
@@ -242,7 +242,7 @@ class ChatController extends Controller
             if($fRoomParticipant) {
                 $data = [
                     'room_name' => $fRoomParticipant->full_name,
-                    'room_icon' => $fRoomParticipant->profile_image,
+                    'room_icon' => $fRoomParticipant->profile_img,
                     'last_seen' => $fRoomParticipant->last_seen,
                     'is_online' => $fRoomParticipant->is_online == 1 ? true : false,
                     'room_type' => "personal"

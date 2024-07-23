@@ -19,25 +19,19 @@
                     </a>
                 </li>
                 <li>
-                    <a href="empty-status.html" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right"
-                        title data-bs-original-title="Status">
-                        <i class="bx bx-stop-circle"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="call.html" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
+                    <a href="#" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
                         data-bs-original-title="Call">
                         <i class="bx bx-phone"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="contact.html" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
+                    <a href="#" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
                         data-bs-original-title="Contact">
                         <i class="bx bx-user-pin"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('setting') }}" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
+                    <a href="/settings" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
                         data-bs-original-title="Settings">
                         <i class="bx bx-cog"></i>
                     </a>

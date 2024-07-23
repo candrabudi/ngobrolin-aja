@@ -1052,13 +1052,13 @@ ul.list-inline .list-inline-item {
 	color: #0A0A0A;
 }
 
-.top-contacts-box .profile-img {
+.top-contacts-box .profile_img {
 	position: relative;
 	width: 46px;
 	height: 46px;
 }
 
-.top-contacts-box .profile-img img {
+.top-contacts-box .profile_img img {
 	max-width: 100%;
 	height: auto;
 	border-radius: 50px;
@@ -1071,7 +1071,7 @@ ul.list-inline .list-inline-item {
 	margin-top: 9px;
 }
 
-.top-contacts-box .profile-img.online:before {
+.top-contacts-box .profile_img.online:before {
 	content: "";
 	position: absolute;
 	right: 0;

@@ -23,7 +23,7 @@ class ChatMessage extends Model
     public function MessageReply()
     {
         return $this->hasOne(ChatMessage::class, 'id', 'message_reply_id')
-            ->select('chat_messages.id', 'full_name', 'profile_image', 'message','chat_messages.created_at')
+            ->select('chat_messages.id', 'full_name', 'profile_img', 'message','chat_messages.created_at')
             ->join('user_profiles as up', 'up.user_id', '=', 'chat_messages.from_id');
     }
 

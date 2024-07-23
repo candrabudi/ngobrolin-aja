@@ -21,7 +21,7 @@
                 userList.innerHTML = '';
                 
                 response.data.data.forEach(user => {
-                    const profileImage = user.profile_image ||
+                    const profileImage = user.profile_img ||
                         'https://cdn-icons-png.flaticon.com/512/847/847969.png';
                     userList.innerHTML += `
                         <li class="user-list-item">
