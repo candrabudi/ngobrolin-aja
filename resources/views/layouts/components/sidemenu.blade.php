@@ -7,13 +7,13 @@
         <div class="chat-menus">
             <ul>
                 <li>
-                    <a href="index.html" class="chat-unread active" data-bs-toggle="tooltip" data-bs-placement="right"
+                    <a href="/chat" class="chat-unread active" data-bs-toggle="tooltip" data-bs-placement="right"
                         title data-bs-original-title="Chat">
                         <i class="bx bx-message-square-dots"></i>
                     </a>
                 </li>
                 <li>
-                    <a href="group.html" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
+                    <a href="#" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
                         data-bs-original-title="Group">
                         <i class="bx bx-group"></i>
                     </a>
@@ -31,7 +31,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/settings" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
+                    <a href="/setting" class="chat-unread" data-bs-toggle="tooltip" data-bs-placement="right" title
                         data-bs-original-title="Settings">
                         <i class="bx bx-cog"></i>
                     </a>
